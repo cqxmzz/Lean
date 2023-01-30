@@ -3,5 +3,43 @@
     "python.analysis.extraPaths": [
         "/Lean/Algorithm.Python",
         "/opt/miniconda3/lib/python3.8/site-packages"
+    ],
+    "jupyter.kernels.filter": [
+        {
+            "path": "/root/.local/share/jupyter/kernels/.net-fsharp/kernel.json",
+            "type": "jupyterKernelspec"
+        },
+        {
+            "path": "/root/.local/share/jupyter/kernels/.net-powershell/kernel.json",
+            "type": "jupyterKernelspec"
+        },
+        {
+            "path": "/opt/miniforge3/bin/python",
+            "type": "pythonEnvironment"
+        },
+        {
+            "path": "/root/.local/share/jupyter/kernels/.net-csharp/kernel.json",
+            "type": "jupyterKernelspec"
+        },
+        {
+            "path": "/usr/local/share/jupyter/kernels/foundation-pomegranate/kernel.json",
+            "type": "jupyterKernelspec"
+        },
+        {
+            "path": "/bin/python2",
+            "type": "pythonEnvironment"
+        },
+        {
+            "path": "/usr/bin/python2",
+            "type": "pythonEnvironment"
+        },
+        {
+            "path": "/usr/bin/python3",
+            "type": "pythonEnvironment"
+        },
+        {
+            "path": "/bin/python3",
+            "type": "pythonEnvironment"
+        }
     ]
 }
