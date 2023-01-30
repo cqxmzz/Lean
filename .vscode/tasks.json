@@ -6,14 +6,33 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "build release",
+            "type": "shell",
+            "command": "dotnet",
+            "args": [
+                "build",
+                "/p:Configuration=Release",
+                "/p:DebugType=portable",
+                "/p:WarningLevel=0",
+                "/p:SelectedOptimization=true"
+            ],
+            "group": "build",
+            "presentation": {
+                "close": true,
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build debug",
             "type": "shell",
             "command": "dotnet",
             "args": [
                 "build",
                 "/p:Configuration=Debug",
                 "/p:DebugType=portable",
-                "/p:WarningLevel=1"
+                "/p:WarningLevel=1",
+                "/p:SelectedOptimization=false"
             ],
             "group": "build",
             "presentation": {
@@ -22,7 +41,26 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "rebuild",
+            "label": "rebuild release",
+            "type": "shell",
+            "command": "dotnet",
+            "args": [
+                "build",
+                "--no-incremental",
+                "/p:Configuration=Release",
+                "/p:DebugType=portable",
+                "/p:WarningLevel=0",
+                "/p:SelectedOptimization=true"
+            ],
+            "group": "build",
+            "presentation": {
+                "close": true,
+                "reveal": "never"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "rebuild debug",
             "type": "shell",
             "command": "dotnet",
             "args": [
@@ -30,7 +68,8 @@
                 "--no-incremental",
                 "/p:Configuration=Debug",
                 "/p:DebugType=portable",
-                "/p:WarningLevel=1"
+                "/p:WarningLevel=1",
+                "/p:SelectedOptimization=false"
             ],
             "group": "build",
             "presentation": {
@@ -52,7 +91,37 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "start research",
+            "label": "clean release",
+            "type": "shell",
+            "command": "dotnet",
+            "args": [
+                "clean",
+                "-c",
+                "Release"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "clean debug",
+            "type": "shell",
+            "command": "dotnet",
+            "args": [
+                "clean",
+                "-c",
+                "Debug"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "start research debug",
             "type": "shell",
             "dependsOn": ["build"],
             "group": "build",

@@ -82,7 +82,7 @@ namespace QuantConnect.Python
 
                 try
                 {
-                    var pyLock = Py.GIL();
+                    // Py.GIL();
                     PythonEngine.Shutdown();
                 }
                 catch (Exception ex)

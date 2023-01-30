@@ -12,4 +12,4 @@ BUILD_DIR=$(absolute_path "${BUILD_DIR}")
 export PYTHONPATH="${PYTHONPATH}:${BUILD_DIR}"
 
 # Launch jupyter-lab
-jupyter-lab --allow-root --no-browser --notebook-dir=$BUILD_DIR --LabApp.token=''
+jupyter-lab --allow-root --no-browser --notebook-dir=$BUILD_DIR --LabApp.token='' --ServerApp.disable_check_xsrf=True

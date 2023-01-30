@@ -19,14 +19,91 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch",
+            "name": "Release My Algo",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
+            "preLaunchTask": "build release",
+            "program": "${workspaceFolder}/Launcher/bin/Release/QuantConnect.Lean.Launcher.dll",
+            "args": [
+                "--config",
+                "${workspaceFolder}/Launcher/bin/Release/config.json",
+                "--debugging",
+                "false",
+                "--algorithm-type-name",
+                "MyTestAlgorithm",
+                "--algorithm-location",
+                "/Lean/Algorithm.Python/MyTestAlgorithm.py",
+                "--close-automatically",
+                "true"
+            ],
+            "cwd": "${workspaceFolder}/Launcher/bin/Release/",
+            "stopAtEntry": false,
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
+        },
+        {
+            "name": "Debug My Algo",
+            "type": "coreclr",
+            "request": "launch",
+            // "preLaunchTask": "build debug",
             "program": "${workspaceFolder}/Launcher/bin/Debug/QuantConnect.Lean.Launcher.dll",
             "args": [
                 "--config",
-                "${workspaceFolder}/Launcher/bin/Debug/config.json"
+                "${workspaceFolder}/Launcher/bin/Debug/config.json",
+                "--debugging",
+                "true",
+                "--algorithm-type-name",
+                "MyTestAlgorithm",
+                "--algorithm-location",
+                "/Lean/Algorithm.Python/MyTestAlgorithm.py",
+                "--close-automatically",
+                "true"
+            ],
+            "cwd": "${workspaceFolder}/Launcher/bin/Debug/",
+            "stopAtEntry": false,
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
+        },
+        {
+            "name": "Release Current Algo",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build release",
+            "program": "${workspaceFolder}/Launcher/bin/Release/QuantConnect.Lean.Launcher.dll",
+            "args": [
+                "--config",
+                "${workspaceFolder}/Launcher/bin/Release/config.json",
+                "--debugging",
+                "false",
+                "--algorithm-type-name",
+                "${fileBasenameNoExtension}",
+                "--algorithm-location",
+                "${file}",
+                "--close-automatically",
+                "true"
+            ],
+            "cwd": "${workspaceFolder}/Launcher/bin/Release/",
+            "stopAtEntry": false,
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
+        },
+        {
+            "name": "Debug Current Algo",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build debug",
+            "program": "${workspaceFolder}/Launcher/bin/Debug/QuantConnect.Lean.Launcher.dll",
+            "args": [
+                "--config",
+                "${workspaceFolder}/Launcher/bin/Debug/config.json",
+                "--debugging",
+                "true",
+                "--algorithm-type-name",
+                "${fileBasenameNoExtension}",
+                "--algorithm-location",
+                "${file}",
+                "--close-automatically",
+                "true"
             ],
             "cwd": "${workspaceFolder}/Launcher/bin/Debug/",
             "stopAtEntry": false,
@@ -38,7 +115,7 @@
             "type": "python",
             "request": "attach",
             "port": 5678,
-            "pathMappings":[{ 
+            "pathMappings" :[{ 
                 "localRoot": "${workspaceFolder}", 
                 "remoteRoot": "${workspaceFolder}"
             }]

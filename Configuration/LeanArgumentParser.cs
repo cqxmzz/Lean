@@ -69,6 +69,10 @@ namespace QuantConnect.Configuration
                 // engine
                 new CommandLineOption("data-folder", CommandOptionType.SingleValue),
 
+                // debugging configuration
+                new CommandLineOption("debugging", CommandOptionType.SingleValue),
+                new CommandLineOption("debugging-method", CommandOptionType.SingleValue),
+
                 // handlers
                 new CommandLineOption("log-handler", CommandOptionType.SingleValue),
                 new CommandLineOption("messaging-handler", CommandOptionType.SingleValue),
