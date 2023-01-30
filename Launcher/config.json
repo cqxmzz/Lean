@@ -82,33 +82,6 @@
   "tradier-account-id": "VA88270715",
   "tradier-access-token": "slUxX49YAulyFk9IUIIUoo3GKdHV",
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
   // parameters to set in the algorithm (the below are just samples)
   "parameters": {
     // Intrinio account user and password
