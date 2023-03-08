@@ -81,6 +81,15 @@ namespace QuantConnect.Logging
         }
 
         /// <summary>
+        /// Write debug message to log
+        /// </summary>
+        /// <param name="text">The data text to log</param>
+        public void Data(string text)
+        {
+            WriteMessage(text, "DATA");
+        }
+
+        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>

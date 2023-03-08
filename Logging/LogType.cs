@@ -30,6 +30,10 @@ namespace QuantConnect.Logging
         /// </summary>
         Trace,
         /// <summary>
+        /// Data log level
+        /// </summary>
+        Data,
+        /// <summary>
         /// Error log level
         /// </summary>
         Error

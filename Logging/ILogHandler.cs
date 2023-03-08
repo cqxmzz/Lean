@@ -41,5 +41,11 @@ namespace QuantConnect.Logging
         /// </summary>
         /// <param name="text">The trace text to log</param>
         void Trace(string text);
+
+        /// <summary>
+        /// Write debug message to log
+        /// </summary>
+        /// <param name="text">The trace text to log</param>
+        void Data(string text);
     }
 }

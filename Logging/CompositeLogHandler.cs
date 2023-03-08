@@ -83,6 +83,18 @@ namespace QuantConnect.Logging
         }
 
         /// <summary>
+        /// Write debug message to log
+        /// </summary>
+        /// <param name="text"></param>
+        public void Data(string text)
+        {
+            foreach (var handler in _handlers)
+            {
+                handler.Data(text);
+            }
+        }
+
+        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>

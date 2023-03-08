@@ -188,7 +188,7 @@ namespace QuantConnect.Data
                 _failedUniverseDataRequestsCount,
                 _requestRates);
 
-            Logging.Log.Trace($"DataMonitor.GenerateReport():{Environment.NewLine}" +
+            Logging.Log.Data($"DataMonitor.GenerateReport():{Environment.NewLine}" +
                 $"DATA USAGE:: Total data requests {report.TotalRequestsCount}{Environment.NewLine}" +
                 $"DATA USAGE:: Succeeded data requests {report.SucceededDataRequestsCount}{Environment.NewLine}" +
                 $"DATA USAGE:: Failed data requests {report.FailedDataRequestsCount}{Environment.NewLine}" +

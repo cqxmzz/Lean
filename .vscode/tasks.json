@@ -6,6 +6,18 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "start research debug",
+            "type": "shell",
+            "dependsOn": ["build"],
+            "group": "build",
+            "isBackground": true,
+            "command" : "${workspaceFolder}/.vscode/launch_research.sh",
+            "args" : [
+                "${workspaceFolder}/Launcher/bin/Debug"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
             "label": "build release",
             "type": "shell",
             "command": "dotnet",
@@ -13,7 +25,7 @@
                 "build",
                 "/p:Configuration=Release",
                 "/p:DebugType=portable",
-                "/p:WarningLevel=0",
+                "/p:WarningLevel=1",
                 "/p:SelectedOptimization=true"
             ],
             "group": "build",
@@ -118,18 +130,6 @@
             "presentation": {
                 "reveal": "silent"
             },
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "start research debug",
-            "type": "shell",
-            "dependsOn": ["build"],
-            "group": "build",
-            "isBackground": true,
-            "command" : "${workspaceFolder}/.vscode/launch_research.sh",
-            "args" : [
-                "${workspaceFolder}/Launcher/bin/Debug"
-            ],
             "problemMatcher": "$msCompile"
         }
     ]

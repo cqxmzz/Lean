@@ -27,6 +27,7 @@ namespace QuantConnect.Logging
     public static class Log
     {
         private static string _lastTraceText = "";
+        private static string _lastDataText = "";
         private static string _lastErrorText = "";
         private static bool _debuggingEnabled;
         private static int _level = 1;
@@ -127,11 +128,36 @@ namespace QuantConnect.Logging
         }
 
         /// <summary>
+        /// Log data
+        /// </summary>
+        public static void Data(string dataText, bool overrideMessageFloodProtection = false)
+        {
+            try
+            {
+                if (dataText == _lastDataText && !overrideMessageFloodProtection) return;
+                _logHandler.Data(dataText);
+                _lastDataText = dataText;
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine("Log.Data(): Error writing data: "  +err.Message);
+            }
+        }
+
+        /// <summary>
         /// Writes the message in normal text
         /// </summary>
         public static void Trace(string format, params object[] args)
         {
             Trace(string.Format(CultureInfo.InvariantCulture, format, args));
+        }
+
+        /// <summary>
+        /// Writes the message in normal text
+        /// </summary>
+        public static void Data(string format, params object[] args)
+        {
+            Data(string.Format(CultureInfo.InvariantCulture, format, args));
         }
 
         /// <summary>

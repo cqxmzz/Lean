@@ -102,7 +102,7 @@ namespace QuantConnect.Messaging
 
                         var statisticsStr = $"{Environment.NewLine}" +
                             $"{string.Join(Environment.NewLine, result.Results.Statistics.Select(x => $"STATISTICS:: {x.Key} {x.Value}"))}";
-                        Log.Trace(statisticsStr);
+                        Log.Data(statisticsStr);
                     }
                     break;
             }

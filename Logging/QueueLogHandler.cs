@@ -100,6 +100,19 @@ namespace QuantConnect.Logging
         }
 
         /// <summary>
+        /// Write debug message to log
+        /// </summary>
+        /// <param name="text">The data text to log</param>
+        public void Data(string text)
+        {
+            var log = new LogEntry(text, DateTime.UtcNow, LogType.Data);
+            _logs.Enqueue(log);
+            OnLogEvent(log);
+
+            _trace.WriteLine(DateTime.Now.ToString(DateFormat, CultureInfo.InvariantCulture) + " Trace:: " + text);
+        }
+
+        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>

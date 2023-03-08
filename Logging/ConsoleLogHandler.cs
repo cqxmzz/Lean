@@ -80,7 +80,20 @@ namespace QuantConnect.Logging
         /// <param name="text">The trace text to log</param>
         public virtual void Trace(string text)
         {
+            Console.ForegroundColor = ConsoleColor.Gray;
             _trace.WriteLine($"{DateTime.UtcNow.ToString(_dateFormat, CultureInfo.InvariantCulture)} TRACE:: {text}");
+            Console.ResetColor();
+        }
+
+        /// <summary>
+        /// Write debug message to log
+        /// </summary>
+        /// <param name="text">The data text to log</param>
+        public virtual void Data(string text)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            _trace.WriteLine($"{DateTime.UtcNow.ToString(_dateFormat, CultureInfo.InvariantCulture)} DATA:: {text}");
+            Console.ResetColor();
         }
 
         /// <summary>

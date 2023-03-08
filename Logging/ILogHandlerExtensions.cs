@@ -70,5 +70,21 @@ namespace QuantConnect.Logging
 
             logHandler.Trace(string.Format(CultureInfo.InvariantCulture, text, args));
         }
+
+        /// <summary>
+        /// Write debug message to log
+        /// </summary>
+        /// <param name="logHandler"></param>
+        /// <param name="text">Message</param>
+        /// <param name="args">Arguments to format.</param>
+        public static void Data(this ILogHandler logHandler, string text, params object[] args)
+        {
+            if (logHandler == null)
+            {
+                throw new ArgumentNullException("logHandler", "Log Handler cannot be null");
+            }
+
+            logHandler.Data(string.Format(CultureInfo.InvariantCulture, text, args));
+        }
     }
 }

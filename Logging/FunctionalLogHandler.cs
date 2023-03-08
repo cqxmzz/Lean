@@ -28,6 +28,7 @@ namespace QuantConnect.Logging
         private const string DateFormat = "yyyyMMdd HH:mm:ss";
         private readonly Action<string> _debug;
         private readonly Action<string> _trace;
+        private readonly Action<string> _data;
         private readonly Action<string> _error;
 
         /// <summary>
@@ -41,12 +42,13 @@ namespace QuantConnect.Logging
         /// <summary>
         /// Initializes a new instance of the <see cref="QuantConnect.Logging.FunctionalLogHandler"/> class.
         /// </summary>
-        public FunctionalLogHandler(Action<string> debug, Action<string> trace, Action<string> error)
+        public FunctionalLogHandler(Action<string> debug, Action<string> trace, Action<string> data, Action<string> error)
         {
             // saves references to the real console text writer since in a deployed state we may overwrite this in order
             // to redirect messages from algorithm to result handler
             _debug = debug;
             _trace = trace;
+            _data = data;
             _error = error;
         }
 
@@ -83,6 +85,18 @@ namespace QuantConnect.Logging
             if (_trace != null)
             {
                 _trace(DateTime.Now.ToString(DateFormat, CultureInfo.InvariantCulture) + " TRACE " + text);
+            }
+        }
+
+        /// <summary>
+        /// Write debug message to log
+        /// </summary>
+        /// <param name="text">The data text to log</param>
+        public void Data(string text)
+        {
+            if (_data != null)
+            {
+                _data(DateTime.Now.ToString(DateFormat, CultureInfo.InvariantCulture) + " DATA " + text);
             }
         }
 

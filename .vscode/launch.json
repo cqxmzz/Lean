@@ -39,13 +39,16 @@
             "cwd": "${workspaceFolder}/Launcher/bin/Release/",
             "stopAtEntry": false,
             "console": "integratedTerminal",
-            "internalConsoleOptions": "neverOpen"
+            "internalConsoleOptions": "neverOpen",
+            "logging": {
+                "moduleLoad": false
+            }
         },
         {
             "name": "Debug My Algo",
             "type": "coreclr",
             "request": "launch",
-            // "preLaunchTask": "build debug",
+            "preLaunchTask": "build debug",
             "program": "${workspaceFolder}/Launcher/bin/Debug/QuantConnect.Lean.Launcher.dll",
             "args": [
                 "--config",
@@ -62,7 +65,10 @@
             "cwd": "${workspaceFolder}/Launcher/bin/Debug/",
             "stopAtEntry": false,
             "console": "integratedTerminal",
-            "internalConsoleOptions": "neverOpen"
+            "internalConsoleOptions": "neverOpen",
+            "logging": {
+                "moduleLoad": false
+            }
         },
         {
             "name": "Release Current Algo",
@@ -85,7 +91,10 @@
             "cwd": "${workspaceFolder}/Launcher/bin/Release/",
             "stopAtEntry": false,
             "console": "integratedTerminal",
-            "internalConsoleOptions": "neverOpen"
+            "internalConsoleOptions": "neverOpen",
+            "logging": {
+                "moduleLoad": false
+            }
         },
         {
             "name": "Debug Current Algo",
@@ -108,7 +117,10 @@
             "cwd": "${workspaceFolder}/Launcher/bin/Debug/",
             "stopAtEntry": false,
             "console": "integratedTerminal",
-            "internalConsoleOptions": "neverOpen"
+            "internalConsoleOptions": "neverOpen",
+            "logging": {
+                "moduleLoad": false
+            }
         },
         {
             "name": "Attach to Python",
