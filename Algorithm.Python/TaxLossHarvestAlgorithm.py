@@ -10,7 +10,7 @@ import math
 # find offline data source
 ##
 
-class MyTestAlgorithm(QCAlgorithm):
+class TaxLossHarvestAlgorithm(QCAlgorithm):
 
     def Initialize(self):
         # backtest set up params
