@@ -52,6 +52,11 @@ namespace QuantConnect.Brokerages.Tradier
             /// Gets the access token from configuration
             /// </summary>
             public static string AccessToken => Config.Get("tradier-access-token");
+
+            /// <summary>
+            /// Gets the streaming access token from configuration
+            /// </summary>
+            public static string StreamingAccessToken => Config.Get("tradier-streaming-access-token");
         }
 
         /// <summary>
@@ -78,7 +83,8 @@ namespace QuantConnect.Brokerages.Tradier
                     { "tradier-use-sandbox", Configuration.UseSandbox.ToStringInvariant() },
                     { "tradier-environment", Configuration.Environment.ToStringInvariant() },
                     { "tradier-account-id", Configuration.AccountId.ToStringInvariant() },
-                    { "tradier-access-token", Configuration.AccessToken.ToStringInvariant() }
+                    { "tradier-access-token", Configuration.AccessToken.ToStringInvariant() },
+                    { "tradier-streaming-access-token", Configuration.StreamingAccessToken.ToStringInvariant() }
                 };
                 return data;
             }
@@ -106,6 +112,7 @@ namespace QuantConnect.Brokerages.Tradier
             }
             var accountId = Read<string>(job.BrokerageData, "tradier-account-id", errors);
             var accessToken = Read<string>(job.BrokerageData, "tradier-access-token", errors);
+            var streamingAccessToken = Read<string>(job.BrokerageData, "tradier-streaming-access-token", errors);
 
             var brokerage = new TradierBrokerage(
                 algorithm,
@@ -114,7 +121,8 @@ namespace QuantConnect.Brokerages.Tradier
                 Composer.Instance.GetExportedValueByTypeName<IDataAggregator>(Config.Get("data-aggregator", "QuantConnect.Lean.Engine.DataFeeds.AggregationManager"), forceTypeNameOnExisting: false),
                 useSandbox,
                 accountId,
-                accessToken);
+                accessToken,
+                streamingAccessToken);
 
             // Add the brokerage to the composer to ensure its accessible to the live data feed.
             Composer.Instance.AddPart<IDataQueueHandler>(brokerage);

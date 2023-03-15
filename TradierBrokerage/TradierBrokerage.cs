@@ -107,8 +107,6 @@ namespace QuantConnect.Brokerages.Tradier
         private string _restApiUrl = "https://api.tradier.com/v1/";
         private string _restApiSandboxUrl = "https://sandbox.tradier.com/v1/";
 
-        private string _streamingAccessToken = "";
-
         protected IRestClient _streamingRestClient;
 
         /// <summary>
@@ -133,7 +131,8 @@ namespace QuantConnect.Brokerages.Tradier
             IDataAggregator aggregator,
             bool useSandbox,
             string accountId,
-            string accessToken)
+            string accessToken,
+            string streamingAccessToken)
             : base("Tradier Brokerage")
         {
             Initialize(
@@ -144,7 +143,8 @@ namespace QuantConnect.Brokerages.Tradier
                 algorithm: algorithm,
                 orderProvider: orderProvider,
                 securityProvider: securityProvider,
-                aggregator: aggregator
+                aggregator: aggregator,
+                streamingAccessToken: streamingAccessToken
             );
         }
 
@@ -172,6 +172,7 @@ namespace QuantConnect.Brokerages.Tradier
 
                 //Send the request:
                 var raw = streaming ? _streamingRestClient.Execute(request) : RestClient.Execute(request);
+
                 _previousResponseRaw = raw.Content;
 
                 if (!raw.IsSuccessful)
@@ -211,7 +212,7 @@ namespace QuantConnect.Brokerages.Tradier
                         Log.Trace(method + "(2): Attempting again...");
                         // this will retry on time outs and other transport exception
                         Thread.Sleep(3000);
-                        return Execute<T>(request, type, rootName, attempts, max);
+                        return Execute<T>(request, type, rootName, attempts, max, streaming);
                     }
                     OnMessage(new BrokerageMessageEvent(BrokerageMessageType.Error, raw.StatusCode.ToStringInvariant(), raw.Content));
 
@@ -246,7 +247,7 @@ namespace QuantConnect.Brokerages.Tradier
                         Log.Trace(method + "(3): Attempting again...");
                         // this will retry on time outs and other transport exception
                         Thread.Sleep(3000);
-                        return Execute<T>(request, type, rootName, attempts, max);
+                        return Execute<T>(request, type, rootName, attempts, max, streaming);
                     }
 
                     Log.Trace(method + "(3): Parameters: " + string.Join(",", parameters));
@@ -264,7 +265,7 @@ namespace QuantConnect.Brokerages.Tradier
                     Log.Trace(method + "(4): Attempting again...");
                     // this will retry on time outs and other transport exception
                     Thread.Sleep(3000);
-                    return Execute<T>(request, type, rootName, attempts, max);
+                    return Execute<T>(request, type, rootName, attempts, max, streaming);
                 }
 
                 Log.Trace(method + "(4): Parameters: " + string.Join(",", parameters));
@@ -1799,14 +1800,14 @@ namespace QuantConnect.Brokerages.Tradier
         /// </summary>
         private void Initialize(string wssUrl,
             string accountId, string accessToken, bool useSandbox, IAlgorithm algorithm,
-            IOrderProvider orderProvider, ISecurityProvider securityProvider, IDataAggregator aggregator)
+            IOrderProvider orderProvider, ISecurityProvider securityProvider, IDataAggregator aggregator, string streamingAccessToken)
         {
             if (IsInitialized)
             {
                 return;
             }
             var restClient = new RestClient(useSandbox ? _restApiSandboxUrl : _restApiUrl);
-            _streamingRestClient = useSandbox ? new RestClient(_restApiUrl) : restClient;
+            _streamingRestClient = new RestClient(_restApiUrl);
             base.Initialize(wssUrl, new WebSocketClientWrapper(), restClient, null, null);
             _algorithm = algorithm;
             _orderProvider = orderProvider;
@@ -1819,7 +1820,7 @@ namespace QuantConnect.Brokerages.Tradier
             RestClient.AddDefaultHeader("Authorization", $"Bearer {accessToken}");
             
             _streamingRestClient.AddDefaultHeader("Accept", "application/json");
-            _streamingRestClient.AddDefaultHeader("Authorization", $"Bearer {_streamingAccessToken}");
+            _streamingRestClient.AddDefaultHeader("Authorization", $"Bearer {streamingAccessToken}");
 
             var subscriptionManager = new EventBasedDataQueueHandlerSubscriptionManager();
             subscriptionManager.SubscribeImpl += (symbols, _) => Subscribe(symbols);

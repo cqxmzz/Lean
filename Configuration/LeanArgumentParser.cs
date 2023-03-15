@@ -116,6 +116,7 @@ namespace QuantConnect.Configuration
                 // tradier configuration
                 new CommandLineOption("tradier-account-id", CommandOptionType.SingleValue),
                 new CommandLineOption("tradier-access-token", CommandOptionType.SingleValue),
+                new CommandLineOption("tradier-streaming-access-token", CommandOptionType.SingleValue),
                 new CommandLineOption("tradier-refresh-token", CommandOptionType.SingleValue),
                 new CommandLineOption("tradier-issued-at", CommandOptionType.SingleValue),
                 new CommandLineOption("tradier-lifespan", CommandOptionType.SingleValue),

@@ -57,7 +57,7 @@ namespace QuantConnect.Brokerages.Tradier
             }
             var accountId = job.BrokerageData["tradier-account-id"];
             var accessToken = job.BrokerageData["tradier-access-token"];
-            _streamingAccessToken = job.BrokerageData["tradier-streaming-access-token"];
+            var streamingAccessToken = job.BrokerageData["tradier-streaming-access-token"];
             var aggregator = Composer.Instance.GetExportedValueByTypeName<IDataAggregator>(Config.Get("data-aggregator", "QuantConnect.Lean.Engine.DataFeeds.AggregationManager"), forceTypeNameOnExisting: false);
 
             Initialize(
@@ -68,7 +68,8 @@ namespace QuantConnect.Brokerages.Tradier
                 algorithm: null,
                 orderProvider: null,
                 securityProvider: null,
-                aggregator: aggregator);
+                aggregator: aggregator,
+                streamingAccessToken: streamingAccessToken);
 
             if (!IsConnected)
             {
@@ -85,11 +86,11 @@ namespace QuantConnect.Brokerages.Tradier
         public IEnumerator<BaseData> Subscribe(SubscriptionDataConfig dataConfig, EventHandler newDataAvailableHandler)
         {
             // streaming is not supported by sandbox
-            if (_useSandbox)
-            {
-                throw new NotSupportedException(
-                    "TradierBrokerage.DataQueueHandler.Subscribe(): The sandbox does not support data streaming.");
-            }
+            // if (_useSandbox)
+            // {
+            //     throw new NotSupportedException(
+            //         "TradierBrokerage.DataQueueHandler.Subscribe(): The sandbox does not support data streaming.");
+            // }
 
             if (!CanSubscribe(dataConfig.Symbol))
             {
@@ -270,7 +271,7 @@ namespace QuantConnect.Brokerages.Tradier
                 if (_streamSession == null || !_streamSession.IsValid)
                 {
                     var request = new RestRequest("markets/events/session", Method.POST);
-                    _streamSession = Execute<TradierStreamSession>(request, TradierApiRequestType.Data, "stream");
+                    _streamSession = Execute<TradierStreamSession>(request, TradierApiRequestType.Data, rootName:"stream", streaming:true);
                 }
 
                 return _streamSession;
