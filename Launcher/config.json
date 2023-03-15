@@ -6,7 +6,7 @@
   // two predefined environments, 'backtesting' and 'live', feel free
   // to add more!
 
-  "environment": "backtesting", // "backtesting", "live-tradier", "live-paper"
+  "environment": "live-tradier", // "backtesting", "live-tradier", "live-paper"
 
   // algorithm class selector
   "algorithm-type-name": "MyTestAlgorithm",
