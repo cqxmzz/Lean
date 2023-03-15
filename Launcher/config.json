@@ -79,9 +79,9 @@
 
   // tradier configuration
   "tradier-environment": "paper",
-  "tradier-account-id": "VA88270715",
-  "tradier-access-token": "slUxX49YAulyFk9IUIIUoo3GKdHV",
-  "tradier-streaming-access-token": "6kNarKWdcCYT9ZIpDfAr4vWAcweC",
+  "tradier-account-id": "",
+  "tradier-access-token": "",
+  "tradier-streaming-access-token": "",
 
   // parameters to set in the algorithm (the below are just samples)
   "parameters": {
