@@ -17,10 +17,10 @@ class MyTestAlgorithm(QCAlgorithm):
         self.cash = 1000000.0                           # Starting cash
         self.addons = True                              # Periodic cash deposits
         self.deposit = 1000.0                           # Periodic cash addons
-
         self.SetStartDate(2016,1,1)                     # Step back from start to warm up
         self.SetEndDate(2023,1,1)                       # Plus one day to calc taxes for 2017
         self.SetCash(self.cash)                         # Set starting cash 
+
         # Buying selling lower limit
         self.harvest_limit_config = 300
         self.buy_limit_config = 1000
