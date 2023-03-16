@@ -87,8 +87,12 @@ class MyTestAlgorithm(QCAlgorithm):
             self.AddEquity(symbol, Resolution.Daily)    # Add securities to portfolio
 
         # schedule rebalancing
-        self.Schedule.On(self.DateRules.WeekStart('VOO', daysOffset=2), \
-                        self.TimeRules.BeforeMarketClose('VOO', 60), \
+        # self.Schedule.On(self.DateRules.WeekStart('VOO', daysOffset=2), \
+        #                 self.TimeRules.BeforeMarketClose('VOO', 60), \
+        #                 self.Rebalance)
+        
+        self.Schedule.On(self.DateRules.Today, \
+                        self.TimeRules.Now, \
                         self.Rebalance)
     
     def SerializeLastSoldTimes(self):
@@ -134,7 +138,9 @@ class MyTestAlgorithm(QCAlgorithm):
         self.SerializeLastSoldTimes()
 
     def Rebalance(self):
+        self.Debug("Rebalance Run") 
         if not self.IsMarketOpen('VOO'):
+            self.Debug("Market Closed") 
             return
         # add periodic cash deposit to portfolio if enabled, backtest only
         if self.addons:
