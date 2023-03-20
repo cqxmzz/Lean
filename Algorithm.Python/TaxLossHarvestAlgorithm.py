@@ -6,11 +6,6 @@ import math
 import time
 import threading
 
-##
-# TODO:
-# find offline data source
-##
-
 class TaxLossHarvestAlgorithm(QCAlgorithm):
 
     def Initialize(self):
