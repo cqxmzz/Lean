@@ -114,8 +114,7 @@ namespace QuantConnect.Messaging
         public void SendNotification(Notification notification)
         {
             var type = notification.GetType();
-            if (type == typeof(NotificationEmail)
-             || type == typeof(NotificationWeb)
+            if (type == typeof(NotificationWeb)
              || type == typeof(NotificationSms)
              || type == typeof(NotificationTelegram))
             {

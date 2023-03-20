@@ -18,9 +18,9 @@ class MyTestAlgorithm(QCAlgorithm):
         self.cash = 1000000.0                           # Starting cash
         self.addons = True                              # Periodic cash deposits
         self.deposit = 1000.0                           # Periodic cash addons
-        self.SetStartDate(2016,1,6)                     # Step back from start to warm up
-        self.SetEndDate(2023,3,1)                       # Plus one day to calc taxes for 2017
         if not self.LiveMode:
+            self.SetStartDate(2016,1,6)                     # Step back from start to warm up
+            self.SetEndDate(2023,3,1)                       # Plus one day to calc taxes for 2017
             self.SetCash(self.cash)                         # Set starting cash 
             self.SetBrokerageModel(BrokerageName.TradierBrokerage, AccountType.Cash)
             self.SetBenchmark("VOO")
@@ -109,9 +109,10 @@ class MyTestAlgorithm(QCAlgorithm):
                             self.EmailPortfolioRun)
         
         # for live debug
-        self.Schedule.On(self.DateRules.Today, self.TimeRules.Now, self.RebalanceRun)
+        # self.Schedule.On(self.DateRules.Today, self.TimeRules.Now, self.RebalanceRun)
         # self.Schedule.On(self.DateRules.Today, self.TimeRules.Now, self.EmailRebalanceRun)
         # self.Schedule.On(self.DateRules.Today, self.TimeRules.Now, self.EmailPortfolioRun)
+        self.Email("test", "test")
 
     def SerializeLastSoldTimes(self):
         self.ObjectStore.Save("last_sold_times", json.dumps(self.last_sold_times))
@@ -239,7 +240,7 @@ class MyTestAlgorithm(QCAlgorithm):
 
         # market not open
         if not self.IsMarketOpen('VOO'):
-            self.DebugString("Market Closed") 
+            self.DebugString("Market Closed")
             return
         
         # still orders open

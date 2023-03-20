@@ -16,7 +16,10 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using QuantConnect.Configuration;
 using QuantConnect.Util;
+using System.Net;
+using System.Net.Mail;
 
 namespace QuantConnect.Notifications
 {
@@ -154,6 +157,18 @@ namespace QuantConnect.Notifications
             Message = message ?? string.Empty;
             Subject = subject ?? string.Empty;
             Headers = headers;
+        }
+
+        // send the email
+        public override void Send()
+        {
+            MailMessage message = new MailMessage(Address, Address, Subject, Message);
+            SmtpClient emailClient = new SmtpClient(Config.Get("smtp-client", "smtp.gmail.com")) {
+                Port = Config.GetInt("smtp-port", 587),
+                Credentials = new NetworkCredential(Config.Get("email-address", ""), Config.Get("email-password", "")),
+                EnableSsl = true,
+            };
+            emailClient.Send(message);
         }
     }
 
