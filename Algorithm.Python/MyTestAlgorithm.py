@@ -14,53 +14,18 @@ import threading
 class MyTestAlgorithm(QCAlgorithm):
 
     def Initialize(self):
-        # backtest set up params
-        self.cash = 1000000.0                           # Starting cash
-        self.addons = True                              # Periodic cash deposits
-        self.deposit = 1000.0                           # Periodic cash addons
-        if not self.LiveMode:
-            self.SetStartDate(2016,1,6)                     # Step back from start to warm up
-            self.SetEndDate(2023,3,1)                       # Plus one day to calc taxes for 2017
-            self.SetCash(self.cash)                         # Set starting cash 
-            self.SetBrokerageModel(BrokerageName.TradierBrokerage, AccountType.Cash)
-            self.SetBenchmark("VOO")
-
-        # Buying selling lower limit
-        self.harvest_limit_config = 300
-        self.buy_limit_config = 1000
-        # Securities of different types
-        self.symbol_config = {'VOO': ['VOO', 'IVV', 'SPLG'],
-                              'VO':  ['VO',  'IJH', 'SPMD'],
-                              'VB':  ['VB',  'IJR', 'SLY'],
-                              'VXUS':['VXUS','IXUS','CWI'],
-                              'BND': ['BND', 'IUSB','SPAB'],
-                              'BNDX':['BNDX','IAGG','BWX'],
-                              'VTIP':['VTIP','SCHP','TIP'],
-                              'VNQ': ['VNQ', 'IVR', 'RWR'],
-                              'VNQI':['VNQI','IFGL','RWX'],
-                              'GLD': ['GLD', 'IAU', 'DBP'],
-                              'COMT':['COMT','DBC', 'GSG']}
-        # Fixed weight allocation
-        self.weight_config = {'VOO' : 0.35,
-                              'VO'  : 0.1,
-                              'VB'  : 0.05,
-                              'VXUS': 0.15,
-                              'BND' : 0.05,
-                              'BNDX': 0.05,
-                              'VTIP': 0.05,
-                              'VNQ' : 0.05,
-                              'VNQI': 0.05,
-                              'GLD' : 0.05,
-                              'COMT': 0.05}
-        # age adjustment
-        self.use_age_adjustment = True
-        self.birth_year = 1992
-        self.age_weighted_types = [
-            'BND',
-            'BNDX',
-            'VTIP',
-            'GLD',
-            'COMT']
+        #######################
+        # for live debug
+        #######################
+        # self.Schedule.On(self.DateRules.Today, self.TimeRules.Now, self.RebalanceRun)
+        # self.Schedule.On(self.DateRules.Today, self.TimeRules.Now, self.EmailRebalanceRun)
+        # self.Schedule.On(self.DateRules.Today, self.TimeRules.Now, self.EmailPortfolioRun)
+        #######################
+        # tuneable params
+        #######################
+        # last sold times
+        self.refresh_last_sold_times = True
+        self.default_last_sold_times = datetime.datetime(2015, 1, 1).timestamp()
         # outside allocation
         self.use_outside_allocation = True
         self.outside_allocation_config = {
@@ -75,27 +40,71 @@ class MyTestAlgorithm(QCAlgorithm):
                 'year': 2022
             },
         }
-        # last sold times
-        self.refresh_last_sold_times = True
-        self.default_last_sold_times = datetime.datetime(2015, 1, 1).timestamp()
-        
-        # set utility constants
+        # Fixed weight allocation
+        self.weight_config = {'VOO' : 0.35,
+                              'VO'  : 0.1,
+                              'VB'  : 0.05,
+                              'VXUS': 0.15,
+                              'BND' : 0.05,
+                              'BNDX': 0.05,
+                              'VTIP': 0.05,
+                              'VNQ' : 0.05,
+                              'VNQI': 0.05,
+                              'GLD' : 0.05,
+                              'COMT': 0.05}
+        # Securities of different types
+        self.symbol_config = {'VOO': ['VOO', 'IVV', 'SPLG'],
+                              'VO':  ['VO',  'IJH', 'SPMD'],
+                              'VB':  ['VB',  'IJR', 'SLY'],
+                              'VXUS':['VXUS','IXUS','CWI'],
+                              'BND': ['BND', 'IUSB','SPAB'],
+                              'BNDX':['BNDX','IAGG','BWX'],
+                              'VTIP':['VTIP','SCHP','TIP'],
+                              'VNQ': ['VNQ', 'IVR', 'RWR'],
+                              'VNQI':['VNQI','IFGL','RWX'],
+                              'GLD': ['GLD', 'IAU', 'DBP'],
+                              'COMT':['COMT','DBC', 'GSG']}
+        # Buying selling lower limit
+        self.harvest_limit_config = 300
+        self.buy_limit_config = 5000
+        # age adjustment
+        self.use_age_adjustment = True
+        self.birth_year = 1992
+        self.age_weighted_types = [
+            'BND',
+            'BNDX',
+            'VTIP',
+            'GLD',
+            'COMT']
+        # email
+        self.email_address = "simoncqm@gmail.com"
+        #######################
+        # backtest set up params
+        #######################
+        self.cash = 1000000.0                           # Starting cash
+        self.addons = True                              # Periodic cash deposits
+        self.deposit = 1000.0                           # Periodic cash addons
+        if not self.LiveMode:
+            self.SetStartDate(2016,1,6)                     # Step back from start to warm up
+            self.SetEndDate(2023,3,1)                       # Plus one day to calc taxes for 2017
+            self.SetCash(self.cash)                         # Set starting cash 
+            self.SetBrokerageModel(BrokerageName.TradierBrokerage, AccountType.Cash)
+            self.SetBenchmark("VOO")
+        #######################
+        # utilities
+        #######################
         self.symbols = [v for vl in self.symbol_config.values() for v in vl]
         self.symbol_types = self.symbol_config.keys()
         self.symbol_to_type = {v: k for k, vl in self.symbol_config.items() for v in vl}
         self.last_sold_times = {k: self.default_last_sold_times for k in self.symbols}
         self.DeserializeLastSoldTimes()
-        
         # set up symbols and indicators
         for symbol in self.symbols:
             self.AddEquity(symbol, Resolution.Minute if self.LiveMode else Resolution.Daily)
-
         # string to compose for emailing, this is shared in all the runs, but we have a lock on rebalance, so it's fine
-        self.email_address = "simoncqm@gmail.com"
         self.email_body_string = ""
         self.lock = threading.Lock()
         self.has_data = False
-
         # schedule rebalancing
         self.Schedule.On(self.DateRules.WeekStart('VOO', daysOffset=2), \
                         self.TimeRules.BeforeMarketClose('VOO', 60), \
@@ -107,12 +116,6 @@ class MyTestAlgorithm(QCAlgorithm):
             self.Schedule.On(self.DateRules.EveryDay("VOO"), \
                             self.TimeRules.AfterMarketOpen("VOO", 60), \
                             self.EmailPortfolioRun)
-        
-        # for live debug
-        # self.Schedule.On(self.DateRules.Today, self.TimeRules.Now, self.RebalanceRun)
-        # self.Schedule.On(self.DateRules.Today, self.TimeRules.Now, self.EmailRebalanceRun)
-        # self.Schedule.On(self.DateRules.Today, self.TimeRules.Now, self.EmailPortfolioRun)
-        self.Email("test", "test")
 
     def SerializeLastSoldTimes(self):
         self.ObjectStore.Save("last_sold_times", json.dumps(self.last_sold_times))
@@ -233,33 +236,27 @@ class MyTestAlgorithm(QCAlgorithm):
     def Rebalance(self, email_only):
         self.email_body_string = ""
         self.DebugString("Rebalance Run")
-        
         # add periodic cash deposit to portfolio if enabled, backtest only
         if self.addons and not self.LiveMode:
             self.Portfolio.SetCash(float(self.Portfolio.Cash) + self.deposit)
-
         # market not open
         if not self.IsMarketOpen('VOO'):
             self.DebugString("Market Closed")
             return
-        
         # still orders open
         if len(self.Transactions.GetOpenOrders()) > 0:
             self.DebugString("Orders Still Open")
             return
-
         # Sell anything not in config
         if self.Portfolio.Invested:
             for active_key, active_security in self.Portfolio.items():
                 if active_key not in self.symbols:
                     self.SellSecurity(active_key.Value, email_only)
-                        
         # Sell anything shorted
         if self.Portfolio.Invested:
             for active_key, active_security in self.Portfolio.items():
                 if active_security.Quantity < 0:
                     self.SellSecurity(active_key.Value, email_only)
-
         # Prepare to harvest
         type_to_buying_symbol = {}
         symbol_to_profit = {s: self.Portfolio[s].UnrealizedProfit 
@@ -270,14 +267,12 @@ class MyTestAlgorithm(QCAlgorithm):
                           if self.Portfolio.Invested and s in self.Portfolio else 0 
                           for s in self.symbols}
         self.DebugString("symbol_to_value: " + str(symbol_to_value.items()))
-        
         # Sell something if owe cash
         while self.Portfolio.Cash < 0:
             symbols_to_profit_ratio = {symbol: symbol_to_profit[symbol] / (symbol_to_value[symbol] + 0.1) for symbol in self.Portfolio.keys()}
             symbol_to_sell_for_cash = max(symbols_to_profit_ratio, key=symbols_to_profit_ratio.get)
             selling_quantity = min(math.ceil((self.buy_limit_config - self.Portfolio.Cash) / self.Securities[symbol].Price), self.Portfolio[symbol].Quantity)
             self.BuySecurity(symbol_to_sell_for_cash, -selling_quantity, email_only)
-
         # find per category symbol that has the most gain/value that are not wash sale buy
         for type in self.symbol_types:
             symbols_to_profit_ratio = \
@@ -289,8 +284,7 @@ class MyTestAlgorithm(QCAlgorithm):
                     max(symbols_to_profit_ratio, key=lambda s:(symbols_to_profit_ratio[s], s))
             self.DebugString("symbols_to_profit_ratio: " + str(symbols_to_profit_ratio.items()))
         self.DebugString("type_to_buying_symbol: " + str(type_to_buying_symbol.items()))
-        
-        # loss harvesting
+        # loss harvesting selling
         if self.Portfolio.Invested:
             for active_key, active_security in self.Portfolio.items():
                 if active_key in self.symbols:
@@ -298,7 +292,6 @@ class MyTestAlgorithm(QCAlgorithm):
                     if type in type_to_buying_symbol and active_key != type_to_buying_symbol[type]:
                         if active_security.UnrealizedProfit < -1 * self.harvest_limit_config:
                             self.SellSecurity(active_key.Value, email_only)
-
         # compute quantity to buy
         self.DebugString("after harvesting.")
         cash = float(self.Portfolio.Cash)
@@ -306,20 +299,21 @@ class MyTestAlgorithm(QCAlgorithm):
         if cash < self.buy_limit_config * 2:
             return
         cash -= self.buy_limit_config
-        
-        type_to_values = {type: sum((self.Portfolio[symbol].HoldingsValue
-                                    if self.Portfolio.Invested and symbol in self.Portfolio else 0) + self.GetOutsideAllocation(symbol)
-                                    for symbol in self.symbol_config[type]) for type in self.symbol_types}
+        # find existing values
+        type_to_values = {type: sum((self.Portfolio[symbol].HoldingsValue if self.Portfolio.Invested and symbol in self.Portfolio else 0) 
+                                    for symbol in self.symbol_config[type]) 
+                          + self.GetOutsideAllocation(type)
+                          for type in self.symbol_types}
         self.DebugString("type_to_values: " + str(type_to_values.items()))
-        
+        # find values we want to buy
         total_values = sum(type_to_values.values()) + cash
         type_to_desired_buying_values = {type: max(0, total_values * self.GetWeight(type) - type_to_values[type]) for type in self.symbol_types}
         self.DebugString("type_to_desired_buying_values: " + str(type_to_desired_buying_values.items()))
-        
+        # find values we can buy
         type_to_desired_buying_values_sum = sum(v for v in type_to_desired_buying_values.values())
         type_to_buying_values = {k: cash / type_to_desired_buying_values_sum * v for k, v in type_to_desired_buying_values.items() if type in type_to_buying_symbol}
         self.DebugString("type_to_buying_values: " + str(type_to_buying_values.items()))
-        
+        # buy
         for type, v in type_to_buying_values.items():
             if v > self.buy_limit_config:
                 symbol = type_to_buying_symbol[type]
@@ -327,5 +321,5 @@ class MyTestAlgorithm(QCAlgorithm):
                 if price > 0:
                     buying_quantity = math.floor(v / price)
                     self.BuySecurity(symbol, buying_quantity, email_only)
-        
+        # email everything
         self.Email("Lean Portfolio {0}Run Report".format("Faux " if email_only else ""), self.email_body_string)
