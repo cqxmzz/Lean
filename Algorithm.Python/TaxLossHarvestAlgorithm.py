@@ -72,7 +72,9 @@ class TaxLossHarvestAlgorithm(QCAlgorithm):
             'GLD',
             'COMT']
         # email
-        self.email_address = "simoncqm@gmail.com"
+        self.email_address = 'simoncqm@gmail.com'
+        # most basic security
+        self.basic_symbol = 'VOO'
         #######################
         # backtest set up params
         #######################
@@ -84,7 +86,7 @@ class TaxLossHarvestAlgorithm(QCAlgorithm):
             self.SetEndDate(2023,3,1)                       # Plus one day to calc taxes for 2017
             self.SetCash(self.cash)                         # Set starting cash 
             self.SetBrokerageModel(BrokerageName.TradierBrokerage, AccountType.Cash)
-            self.SetBenchmark("VOO")
+            self.SetBenchmark(self.basic_symbol)
         #######################
         # utilities
         #######################
@@ -97,61 +99,61 @@ class TaxLossHarvestAlgorithm(QCAlgorithm):
         for symbol in self.symbols:
             self.AddEquity(symbol, Resolution.Minute if self.LiveMode else Resolution.Daily)
         # string to compose for emailing, this is shared in all the runs, but we have a lock on rebalance, so it's fine
-        self.email_body_string = ""
+        self.email_body_string = ''
         self.lock = threading.Lock()
         self.has_data = False
         # schedule rebalancing
-        self.Schedule.On(self.DateRules.WeekStart('VOO', daysOffset=2), \
-                        self.TimeRules.BeforeMarketClose('VOO', 60), \
+        self.Schedule.On(self.DateRules.WeekStart(self.basic_symbol, daysOffset=2), \
+                        self.TimeRules.BeforeMarketClose(self.basic_symbol, 60), \
                         self.RebalanceRun)
         if self.LiveMode:
-            self.Schedule.On(self.DateRules.WeekStart('VOO', daysOffset=1), \
-                            self.TimeRules.BeforeMarketClose('VOO', 60), \
+            self.Schedule.On(self.DateRules.WeekStart(self.basic_symbol, daysOffset=1), \
+                            self.TimeRules.BeforeMarketClose(self.basic_symbol, 60), \
                             self.EmailRebalanceRun)
-            self.Schedule.On(self.DateRules.EveryDay("VOO"), \
-                            self.TimeRules.AfterMarketOpen("VOO", 60), \
+            self.Schedule.On(self.DateRules.EveryDay(self.basic_symbol), \
+                            self.TimeRules.AfterMarketOpen(self.basic_symbol, 60), \
                             self.EmailPortfolioRun)
 
     def SerializeLastSoldTimes(self):
-        self.ObjectStore.Save("last_sold_times", json.dumps(self.last_sold_times))
+        self.ObjectStore.Save('last_sold_times', json.dumps(self.last_sold_times))
     
     def DeserializeLastSoldTimes(self):
         if self.refresh_last_sold_times:
-            self.ObjectStore.Delete("last_sold_times")
+            self.ObjectStore.Delete('last_sold_times')
             return
-        if self.ObjectStore.ContainsKey("last_sold_times"):
-            self.last_sold_times.update(json.loads(self.ObjectStore.Read("last_sold_times")))
+        if self.ObjectStore.ContainsKey('last_sold_times'):
+            self.last_sold_times.update(json.loads(self.ObjectStore.Read('last_sold_times')))
     
     def OnEndOfAlgorithm(self):
         self.SerializeLastSoldTimes()
         
     def DebugString(self, message):
         self.Debug(message)
-        self.email_body_string += (message + "\n")
+        self.email_body_string += (message + '\n')
 
     def Email(self, title, body):
         if self.LiveMode:
             self.Notify.Email(self.email_address, title, body)
     
     def OnData(self, data):
-        self.DebugString("OnData Called")
+        self.DebugString('OnData Called')
         if not data.HasData:
             return
         for symbol in self.symbols:
             if self.Securities[symbol].Price < 0:
                 return
         self.has_data = True
-        self.DebugString("OnData Has Data")
+        self.DebugString('OnData Has Data')
 
     def WaitForData(self):
         if self.LiveMode:
             while not self.has_data:
-                self.DebugString("No Data, wait for 1 minute")
+                self.DebugString('No Data, wait for 1 minute')
                 time.sleep(60)
 
     def SecurityToEmailRow(self, symbol):
         active_security = self.Portfolio[symbol]
-        return "{symbol}:\tquantity: {quantity}\tvalue: {value}\tprofit: {profit}\tpercent: {percent}\n".format(
+        return '{symbol}:\tquantity: {quantity}\tvalue: {value}\tprofit: {profit}\tpercent: {percent}\n'.format(
             symbol=symbol,
             quantity=active_security.Quantity,
             value=active_security.HoldingsValue,
@@ -161,7 +163,7 @@ class TaxLossHarvestAlgorithm(QCAlgorithm):
 
     def SellSecurity(self, symbol, email_only):
         active_security = self.Securities[symbol]
-        self.DebugString("Sell: " + self.SecurityToEmailRow(symbol))
+        self.DebugString('Sell: ' + self.SecurityToEmailRow(symbol))
         if not email_only:
             self.Liquidate(symbol)
             self.last_sold_times[symbol] = Time.DateTimeToUnixTimeStamp(self.Time)
@@ -171,7 +173,7 @@ class TaxLossHarvestAlgorithm(QCAlgorithm):
         if quantity <= 0:
             return
         active_security = self.Securities[symbol]
-        self.DebugString("Buy: {symbol}:\tquantity: {quantity}\tprice: {price}\tvalue: {value}\n".format(
+        self.DebugString('Buy: {symbol}:\tquantity: {quantity}\tprice: {price}\tvalue: {value}\n'.format(
             symbol=symbol,
             quantity=quantity,
             price=active_security.Price,
@@ -182,13 +184,13 @@ class TaxLossHarvestAlgorithm(QCAlgorithm):
 
     def EmailPortfolioRun(self):
         self.WaitForData()
-        email_body = ""
+        email_body = ''
         if self.Portfolio.Invested:
             for symbol in self.Portfolio.keys():
                 email_body += self.SecurityToEmailRow(symbol)
-        email_body += "cash: {cash}\n".format(cash=self.Portfolio.Cash)
-        email_body += "total: {total}\n".format(total=self.Portfolio.TotalPortfolioValue)
-        self.Email("Lean Portfolio Report", email_body)
+        email_body += 'cash: {cash}\n'.format(cash=self.Portfolio.Cash)
+        email_body += 'total: {total}\n'.format(total=self.Portfolio.TotalPortfolioValue)
+        self.Email('Lean Portfolio Report', email_body)
 
     def RebalanceRun(self):
         self.WaitForData()
@@ -229,18 +231,18 @@ class TaxLossHarvestAlgorithm(QCAlgorithm):
             return (1 - age_weight) / none_age_weighted_sum * self.weight_config[type]
 
     def Rebalance(self, email_only):
-        self.email_body_string = ""
-        self.DebugString("Rebalance Run")
+        self.email_body_string = ''
+        self.DebugString('Rebalance Run')
         # add periodic cash deposit to portfolio if enabled, backtest only
         if self.addons and not self.LiveMode:
             self.Portfolio.SetCash(float(self.Portfolio.Cash) + self.deposit)
         # market not open
-        if not self.IsMarketOpen('VOO'):
-            self.DebugString("Market Closed")
+        if not self.IsMarketOpen(self.basic_symbol):
+            self.DebugString('Market Closed')
             return
         # still orders open
         if len(self.Transactions.GetOpenOrders()) > 0:
-            self.DebugString("Orders Still Open")
+            self.DebugString('Orders Still Open')
             return
         # Sell anything not in config
         if self.Portfolio.Invested:
@@ -257,11 +259,11 @@ class TaxLossHarvestAlgorithm(QCAlgorithm):
         symbol_to_profit = {s: self.Portfolio[s].UnrealizedProfit 
                           if self.Portfolio.Invested and s in self.Portfolio else 0 
                           for s in self.symbols}
-        self.DebugString("symbol_to_profit: " + str(symbol_to_profit.items()))
+        self.DebugString('symbol_to_profit: ' + str(symbol_to_profit.items()))
         symbol_to_value = {s: self.Portfolio[s].HoldingsValue 
                           if self.Portfolio.Invested and s in self.Portfolio else 0 
                           for s in self.symbols}
-        self.DebugString("symbol_to_value: " + str(symbol_to_value.items()))
+        self.DebugString('symbol_to_value: ' + str(symbol_to_value.items()))
         # Sell something if owe cash
         while self.Portfolio.Cash < 0:
             symbols_to_profit_ratio = {symbol: symbol_to_profit[symbol] / (symbol_to_value[symbol] + 0.1) for symbol in self.Portfolio.keys()}
@@ -277,8 +279,8 @@ class TaxLossHarvestAlgorithm(QCAlgorithm):
             if len(symbols_to_profit_ratio):
                 type_to_buying_symbol[type] = \
                     max(symbols_to_profit_ratio, key=lambda s:(symbols_to_profit_ratio[s], s))
-            self.DebugString("symbols_to_profit_ratio: " + str(symbols_to_profit_ratio.items()))
-        self.DebugString("type_to_buying_symbol: " + str(type_to_buying_symbol.items()))
+            self.DebugString('symbols_to_profit_ratio: ' + str(symbols_to_profit_ratio.items()))
+        self.DebugString('type_to_buying_symbol: ' + str(type_to_buying_symbol.items()))
         # loss harvesting selling
         if self.Portfolio.Invested:
             for active_key, active_security in self.Portfolio.items():
@@ -288,9 +290,9 @@ class TaxLossHarvestAlgorithm(QCAlgorithm):
                         if active_security.UnrealizedProfit < -1 * self.harvest_limit_config:
                             self.SellSecurity(active_key.Value, email_only)
         # compute quantity to buy
-        self.DebugString("after harvesting.")
+        self.DebugString('after harvesting.')
         cash = float(self.Portfolio.Cash)
-        self.DebugString("cash: " + str(cash))
+        self.DebugString('cash: ' + str(cash))
         if cash < self.buy_limit_config * 2:
             return
         cash -= self.buy_limit_config
@@ -299,15 +301,15 @@ class TaxLossHarvestAlgorithm(QCAlgorithm):
                                     for symbol in self.symbol_config[type]) 
                           + self.GetOutsideAllocation(type)
                           for type in self.symbol_types}
-        self.DebugString("type_to_values: " + str(type_to_values.items()))
+        self.DebugString('type_to_values: ' + str(type_to_values.items()))
         # find values we want to buy
         total_values = sum(type_to_values.values()) + cash
         type_to_desired_buying_values = {type: max(0, total_values * self.GetWeight(type) - type_to_values[type]) for type in self.symbol_types}
-        self.DebugString("type_to_desired_buying_values: " + str(type_to_desired_buying_values.items()))
+        self.DebugString('type_to_desired_buying_values: ' + str(type_to_desired_buying_values.items()))
         # find values we can buy
         type_to_desired_buying_values_sum = sum(v for v in type_to_desired_buying_values.values())
         type_to_buying_values = {k: cash / type_to_desired_buying_values_sum * v for k, v in type_to_desired_buying_values.items() if type in type_to_buying_symbol}
-        self.DebugString("type_to_buying_values: " + str(type_to_buying_values.items()))
+        self.DebugString('type_to_buying_values: ' + str(type_to_buying_values.items()))
         # buy
         for type, v in type_to_buying_values.items():
             if v > self.buy_limit_config:
@@ -317,4 +319,4 @@ class TaxLossHarvestAlgorithm(QCAlgorithm):
                     buying_quantity = math.floor(v / price)
                     self.BuySecurity(symbol, buying_quantity, email_only)
         # email everything
-        self.Email("Lean Portfolio {0}Run Report".format("Faux " if email_only else ""), self.email_body_string)
+        self.Email('Lean Portfolio {0}Run Report'.format('Faux ' if email_only else ''), self.email_body_string)

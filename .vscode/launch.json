@@ -123,6 +123,58 @@
             }
         },
         {
+            "name": "Release Tax Algo",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build release",
+            "program": "${workspaceFolder}/Launcher/bin/Release/QuantConnect.Lean.Launcher.dll",
+            "args": [
+                "--config",
+                "${workspaceFolder}/Launcher/bin/Release/tax_loss_config.json",
+                "--debugging",
+                "false",
+                "--algorithm-type-name",
+                "TaxLossHarvestAlgorithm",
+                "--algorithm-location",
+                "/Lean/Algorithm.Python/TaxLossHarvestAlgorithm.py",
+                "--close-automatically",
+                "true"
+            ],
+            "cwd": "${workspaceFolder}/Launcher/bin/Release/",
+            "stopAtEntry": false,
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "logging": {
+                "moduleLoad": false
+            }
+        },
+        {
+            "name": "Debug Tax Algo",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build debug",
+            "program": "${workspaceFolder}/Launcher/bin/Debug/QuantConnect.Lean.Launcher.dll",
+            "args": [
+                "--config",
+                "${workspaceFolder}/Launcher/bin/Debug/tax_loss_config.json",
+                "--debugging",
+                "true",
+                "--algorithm-type-name",
+                "TaxLossHarvestAlgorithm",
+                "--algorithm-location",
+                "/Lean/Algorithm.Python/TaxLossHarvestAlgorithm.py",
+                "--close-automatically",
+                "true"
+            ],
+            "cwd": "${workspaceFolder}/Launcher/bin/Debug/",
+            "stopAtEntry": false,
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "logging": {
+                "moduleLoad": false
+            }
+        },
+        {
             "name": "Attach to Python",
             "type": "python",
             "request": "attach",
