@@ -175,6 +175,28 @@
             }
         },
         {
+            "name": "Debug Report",
+            "type": "coreclr",
+            "request": "launch",
+            // "preLaunchTask": "build debug",
+            "program": "${workspaceFolder}/Report/bin/Debug/QuantConnect.Report.dll",
+            "args": [
+                // "--config",
+                // "${workspaceFolder}/Report/bin/Debug/config.json",
+                // "--debugging",
+                // "true",
+                // "--close-automatically",
+                // "true"
+            ],
+            "cwd": "${workspaceFolder}/Report/bin/Debug/",
+            "stopAtEntry": false,
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "logging": {
+                "moduleLoad": false
+            }
+        },
+        {
             "name": "Attach to Python",
             "type": "python",
             "request": "attach",
