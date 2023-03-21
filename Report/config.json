@@ -1,11 +1,11 @@
 ﻿{
   "data-folder": "../../../Data",
-  "strategy-name": "Foobar",
+  "strategy-name": "MyTestAlgorithm",
   "strategy-version": "v1.0.0",
-  "strategy-description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
-  "live-data-source-file": "Foobar-live.json",
-  "backtest-data-source-file": "Foobar.json",
-  "report-destination": "Foobar.html",
+  "strategy-description": "MyTestAlgorithm testing",
+  "live-data-source-file": "/Lean/Launcher/bin/Release/MyTestAlgorithm.json",
+  "backtest-data-source-file": "/Lean/Launcher/bin/Release/MyTestAlgorithm.json",
+  "report-destination": "MyTestAlgorithm.html",
 
   "environment": "report",
 

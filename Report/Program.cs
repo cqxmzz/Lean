@@ -131,7 +131,7 @@ namespace QuantConnect.Report
 
             Log.Trace("QuantConnect.Report.Main(): Completed.");
 
-            if (!Console.IsInputRedirected)
+            if (!Console.IsInputRedirected && !Config.GetBool("close-automatically"))
             {
                 Console.ReadKey();
             }

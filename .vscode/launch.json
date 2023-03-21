@@ -175,20 +175,18 @@
             }
         },
         {
-            "name": "Debug Report",
+            "name": "Release Report",
             "type": "coreclr",
             "request": "launch",
-            // "preLaunchTask": "build debug",
-            "program": "${workspaceFolder}/Report/bin/Debug/QuantConnect.Report.dll",
+            "preLaunchTask": "build release",
+            "program": "${workspaceFolder}/Report/bin/Release/QuantConnect.Report.dll",
             "args": [
-                // "--config",
-                // "${workspaceFolder}/Report/bin/Debug/config.json",
-                // "--debugging",
-                // "true",
-                // "--close-automatically",
-                // "true"
+                "--config",
+                "${workspaceFolder}/Report/bin/Release/config.json",
+                "--close-automatically",
+                "true"
             ],
-            "cwd": "${workspaceFolder}/Report/bin/Debug/",
+            "cwd": "${workspaceFolder}/Report/bin/Release/",
             "stopAtEntry": false,
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
