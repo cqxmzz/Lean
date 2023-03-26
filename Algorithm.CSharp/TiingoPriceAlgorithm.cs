@@ -43,9 +43,6 @@ namespace QuantConnect.Algorithm.CSharp
             SetEndDate(2017, 12, 31);
             SetCash(100000);
 
-            // Set your Tiingo API Token here
-            Tiingo.SetAuthCode("my-tiingo-api-token");
-
             _symbol = AddData<TiingoPrice>(Ticker, Resolution.Daily).Symbol;
 
             _emaFast = EMA(_symbol, 5);

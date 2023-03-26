@@ -58,61 +58,61 @@ namespace QuantConnect.Data.Custom.Tiingo
         /// The actual (not adjusted) open price of the asset on the specific date
         /// </summary>
         [JsonProperty("open")]
-        public override decimal Open { get; set; }
+        public decimal UnadjustedOpen { get; set; }
 
         /// <summary>
         /// The actual (not adjusted) high price of the asset on the specific date
         /// </summary>
         [JsonProperty("high")]
-        public override decimal High { get; set; }
+        public decimal UnadjustedHigh { get; set; }
 
         /// <summary>
         /// The actual (not adjusted) low price of the asset on the specific date
         /// </summary>
         [JsonProperty("low")]
-        public override decimal Low { get; set; }
+        public decimal UnadjustedLow { get; set; }
 
         /// <summary>
         /// The actual (not adjusted) closing price of the asset on the specific date
         /// </summary>
         [JsonProperty("close")]
-        public override decimal Close { get; set; }
+        public decimal UnadjustedClose { get; set; }
 
         /// <summary>
         /// The actual (not adjusted) number of shares traded during the day
         /// </summary>
         [JsonProperty("volume")]
-        public override decimal Volume { get; set; }
+        public decimal UnadjustedVolume { get; set; }
 
         /// <summary>
         /// The adjusted opening price of the asset on the specific date. Returns null if not available.
         /// </summary>
         [JsonProperty("adjOpen")]
-        public decimal AdjustedOpen { get; set; }
+        public override decimal Open { get; set; }
 
         /// <summary>
         /// The adjusted high price of the asset on the specific date. Returns null if not available.
         /// </summary>
         [JsonProperty("adjHigh")]
-        public decimal AdjustedHigh { get; set; }
+        public override decimal High { get; set; }
 
         /// <summary>
         /// The adjusted low price of the asset on the specific date. Returns null if not available.
         /// </summary>
         [JsonProperty("adjLow")]
-        public decimal AdjustedLow { get; set; }
+        public override decimal Low { get; set; }
 
         /// <summary>
         /// The adjusted close price of the asset on the specific date. Returns null if not available.
         /// </summary>
         [JsonProperty("adjClose")]
-        public decimal AdjustedClose { get; set; }
+        public override decimal Close { get; set; }
 
         /// <summary>
         /// The adjusted number of shares traded during the day - adjusted for splits. Returns null if not available
         /// </summary>
         [JsonProperty("adjVolume")]
-        public long AdjustedVolume { get; set; }
+        public override decimal Volume { get; set; }
 
         /// <summary>
         /// The dividend paid out on "date" (note that "date" will be the "exDate" for the dividend)

@@ -25,7 +25,6 @@ using QuantConnect.Interfaces;
 using System.Collections.Generic;
 using QuantConnect.Configuration;
 using QuantConnect.Data.Auxiliary;
-using QuantConnect.Data.Custom.Tiingo;
 using QuantConnect.Lean.Engine.DataFeeds.Enumerators;
 
 namespace QuantConnect.Lean.Engine.DataFeeds
@@ -176,16 +175,6 @@ namespace QuantConnect.Lean.Engine.DataFeeds
                 OnInvalidConfigurationDetected(new InvalidConfigurationDetectedEventArgs(_config.Symbol, exception.Message));
                 _endOfStream = true;
                 return;
-            }
-
-            // If Tiingo data, set the access token in data factory
-            var tiingo = _dataFactory as TiingoPrice;
-            if (tiingo != null)
-            {
-                if (!Tiingo.IsAuthCodeSet)
-                {
-                    Tiingo.SetAuthCode(Config.Get("tiingo-auth-token"));
-                }
             }
 
             // load up the map files for equities, options, and custom data if it supports it.

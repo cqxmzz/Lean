@@ -29,9 +29,6 @@ class TiingoPriceAlgorithm(QCAlgorithm):
         self.SetEndDate(2017, 12, 31)
         self.SetCash(100000)
 
-        # Set your Tiingo API Token here
-        Tiingo.SetAuthCode("my-tiingo-api-token")
-
         self.ticker = "AAPL"
         self.symbol = self.AddData(TiingoPrice, self.ticker, Resolution.Daily).Symbol
 

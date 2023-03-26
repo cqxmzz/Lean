@@ -12,6 +12,7 @@
 # limitations under the License.
 
 from AlgorithmImports import *
+from QuantConnect.Data.Custom.Tiingo import *
 
 ### <summary>
 ### Basic template algorithm simply initializes the date range and cash. This is a skeleton
@@ -24,20 +25,32 @@ class MyTestAlgorithm(QCAlgorithm):
     '''Basic template algorithm simply initializes the date range and cash'''
 
     def Initialize(self):
-        '''Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.'''
+        # Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
+        self.SetStartDate(2017, 1, 1)
+        self.SetEndDate(2017, 12, 31)
+        self.SetCash(100000)
 
-        self.SetStartDate(2013,10, 7)  #Set Start Date
-        self.SetEndDate(2013,10,11)    #Set End Date
-        self.SetCash(100000)           #Set Strategy Cash
-        # Find more symbols here: http://quantconnect.com/data
-        self.AddEquity("SPY", Resolution.Minute)
-        self.Debug("numpy test >>> print numpy.pi: " + str(np.pi))
+        self.ticker = "AAPL"
+        self.googlEquity = self.AddEquity(self.ticker, Resolution.Daily).Symbol
+        self.symbol = self.AddData(TiingoPrice, self.ticker, Resolution.Daily).Symbol
 
-    def OnData(self, data):
-        '''OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
+        self.emaFast = self.EMA(self.symbol, 5)
+        self.emaSlow = self.EMA(self.symbol, 10)
 
-        Arguments:
-            data: Slice object keyed by symbol containing the stock data
-        '''
-        if not self.Portfolio.Invested:
-            self.SetHoldings("SPY", 1)
+
+    def OnData(self, slice):
+        # OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
+
+        if not slice.ContainsKey(self.ticker): return
+
+        # Extract Tiingo data from the slice
+        row = slice[self.ticker]
+
+        self.Log(f"{self.Time} - {row.Symbol.Value} - {row.Close} {row.Value} {row.Price} - EmaFast:{self.emaFast} - EmaSlow:{self.emaSlow}")
+
+        # Simple EMA cross
+        if not self.Portfolio.Invested and self.emaFast > self.emaSlow:
+            self.SetHoldings(self.symbol, 1)
+
+        elif self.Portfolio.Invested and self.emaFast < self.emaSlow:
+            self.Liquidate(self.symbol)

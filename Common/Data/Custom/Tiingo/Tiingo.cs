@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 */
+using QuantConnect.Configuration;
 
 namespace QuantConnect.Data.Custom.Tiingo
 {
@@ -20,26 +21,25 @@ namespace QuantConnect.Data.Custom.Tiingo
     /// </summary>
     public static class Tiingo
     {
+
+        private static string _auth_code = "";
         /// <summary>
         /// Gets the Tiingo API token.
         /// </summary>
-        public static string AuthCode { get; private set; } = string.Empty;
+        public static string AuthCode { get {
+            if (IsAuthCodeSet) {
+                return _auth_code;
+            } else {
+                return Config.Get("tiingo-auth-token");
+            }
+        } private set {
+            _auth_code = value;
+            IsAuthCodeSet = true;
+        } }
 
         /// <summary>
         /// Returns true if the Tiingo API token has been set.
         /// </summary>
-        public static bool IsAuthCodeSet { get; private set; }
-
-        /// <summary>
-        /// Sets the Tiingo API token.
-        /// </summary>
-        /// <param name="authCode">The Tiingo API token</param>
-        public static void SetAuthCode(string authCode)
-        {
-            if (string.IsNullOrWhiteSpace(authCode)) return;
-
-            AuthCode = authCode;
-            IsAuthCodeSet = true;
-        }
+        public static bool IsAuthCodeSet { get; private set; };
     }
 }

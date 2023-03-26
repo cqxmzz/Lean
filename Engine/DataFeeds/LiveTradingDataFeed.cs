@@ -26,7 +26,6 @@ using QuantConnect.Data.Market;
 using System.Collections.Generic;
 using QuantConnect.Configuration;
 using QuantConnect.Data.Auxiliary;
-using QuantConnect.Data.Custom.Tiingo;
 using QuantConnect.Lean.Engine.Results;
 using QuantConnect.Data.UniverseSelection;
 using QuantConnect.Lean.Engine.DataFeeds.Enumerators;
@@ -198,12 +197,6 @@ namespace QuantConnect.Lean.Engine.DataFeeds
                 {
                     if (!_channelProvider.ShouldStreamSubscription(request.Configuration))
                     {
-                        if (!Tiingo.IsAuthCodeSet)
-                        {
-                            // we're not using the SubscriptionDataReader, so be sure to set the auth token here
-                            Tiingo.SetAuthCode(Config.Get("tiingo-auth-token"));
-                        }
-
                         var factory = new LiveCustomDataSubscriptionEnumeratorFactory(_timeProvider);
                         var enumeratorStack = factory.CreateEnumerator(request, _dataProvider);
 
