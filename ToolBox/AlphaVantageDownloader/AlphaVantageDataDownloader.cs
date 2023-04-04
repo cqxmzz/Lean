@@ -14,9 +14,11 @@
 */
 
 using CsvHelper;
+using QuantConnect.Configuration;
 using QuantConnect.Data;
 using QuantConnect.Data.Market;
 using QuantConnect.Logging;
+using QuantConnect.Securities;
 using QuantConnect.Util;
 using RestSharp;
 using System;
@@ -24,7 +26,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using QuantConnect.Securities;
+
 
 namespace QuantConnect.ToolBox.AlphaVantageDownloader
 {
@@ -37,6 +39,13 @@ namespace QuantConnect.ToolBox.AlphaVantageDownloader
         private readonly IRestClient _avClient;
         private readonly RateGate _rateGate;
         private bool _disposed;
+
+        /// <summary>
+        /// Construct AlphaVantageDataDownloader with default RestClient
+        /// </summary>
+        public AlphaVantageDataDownloader() : this(Config.Get("alpha-vantage-api-key"))
+        {
+        }
 
         /// <summary>
         /// Construct AlphaVantageDataDownloader with default RestClient

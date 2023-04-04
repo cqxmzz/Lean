@@ -12,45 +12,52 @@
 # limitations under the License.
 
 from AlgorithmImports import *
-from QuantConnect.Data.Custom.Tiingo import *
 
-### <summary>
-### Basic template algorithm simply initializes the date range and cash. This is a skeleton
-### framework you can use for designing an algorithm.
-### </summary>
-### <meta name="tag" content="using data" />
-### <meta name="tag" content="using quantconnect" />
-### <meta name="tag" content="trading and orders" />
+
+from Alphas.HistoricalReturnsAlphaModel import HistoricalReturnsAlphaModel
+from Portfolio.BlackLittermanOptimizationPortfolioConstructionModel import *
+from Portfolio.UnconstrainedMeanVariancePortfolioOptimizer import UnconstrainedMeanVariancePortfolioOptimizer
+from Risk.NullRiskManagementModel import NullRiskManagementModel
+
 class MyTestAlgorithm(QCAlgorithm):
     '''Basic template algorithm simply initializes the date range and cash'''
 
     def Initialize(self):
+        # Set requested data resolution
+        self.UniverseSettings.Resolution = Resolution.Daily
+
         # Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
-        self.SetStartDate(2017, 1, 1)
-        self.SetEndDate(2017, 12, 31)
+        self.SetStartDate(2021, 1, 1)
+        self.SetEndDate(2023, 1, 1)
         self.SetCash(100000)
+        
+        # Set TrainingMethod to be executed at 8:00 am every Sunday
+        self.Train(self.DateRules.Every(DayOfWeek.Sunday), self.TimeRules.At(8 , 0), self.TrainingMethod)
+        
+        self.symbols = [ Symbol.Create(x, SecurityType.Equity, Market.USA) for x in [ 'AAPL', 'MSFT', 'AMZN', 'NVDA', 'GOOGL' ] ]
 
-        self.ticker = "AAPL"
-        self.googlEquity = self.AddEquity(self.ticker, Resolution.Daily).Symbol
-        self.symbol = self.AddData(TiingoPrice, self.ticker, Resolution.Daily).Symbol
+        optimizer = UnconstrainedMeanVariancePortfolioOptimizer()
 
-        self.emaFast = self.EMA(self.symbol, 5)
-        self.emaSlow = self.EMA(self.symbol, 10)
+        # set algorithm framework models
+        self.SetUniverseSelection(CoarseFundamentalUniverseSelectionModel(self.StaticSP500Selector))
+        self.SetAlpha(HistoricalReturnsAlphaModel(resolution = Resolution.Daily))
+        self.SetPortfolioConstruction(BlackLittermanOptimizationPortfolioConstructionModel(optimizer = optimizer))
+        self.SetExecution(ImmediateExecutionModel())
+        self.SetRiskManagement(NullRiskManagementModel())
 
 
-    def OnData(self, slice):
-        # OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
+    def StaticSP500Selector(self, coarse):
+        return self.symbols
 
-        if not slice.ContainsKey(self.ticker): return
+    def OnOrderEvent(self, orderEvent):
+        if orderEvent.Status == OrderStatus.Filled:
+            self.Debug(orderEvent)
 
-        # Extract Tiingo data from the slice
-        row = slice[self.ticker]
+    def TrainingMethod(self):
 
-        self.Log(f"{self.Time} - {row.Symbol.Value} - {row.Close} {row.Value} {row.Price} - EmaFast:{self.emaFast} - EmaSlow:{self.emaSlow}")
+        self.Log(f'Start training at {self.Time}')
+        # Use the historical data to train the machine learning model
+        history = self.History(["SPY"], 200, Resolution.Daily)
 
-        # Simple EMA cross
-        if not self.Portfolio.Invested and self.emaFast > self.emaSlow:
-            self.SetHoldings(self.symbol, 1)
-
-        elif self.Portfolio.Invested and self.emaFast < self.emaSlow:
-            self.Liquidate(self.symbol)
+        # ML code:
+        pass

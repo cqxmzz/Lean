@@ -40,6 +40,6 @@ namespace QuantConnect.Data.Custom.Tiingo
         /// <summary>
         /// Returns true if the Tiingo API token has been set.
         /// </summary>
-        public static bool IsAuthCodeSet { get; private set; };
+        public static bool IsAuthCodeSet { get; private set; }
     }
 }

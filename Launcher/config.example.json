@@ -28,6 +28,11 @@
   "debugging": true,
   "debugging-method": "Debugpy",
 
+  // ml training params
+  "scheduled-event-leaky-bucket-capacity" : 99999999,
+  "scheduled-event-leaky-bucket-time-interval-minutes" : 1,
+  "scheduled-event-leaky-bucket-refill-amount": 999999,
+
   // location of a python virtual env to use libraries from
   //"python-venv": "/venv",
 
@@ -38,7 +43,11 @@
   "api-handler": "QuantConnect.Api.Api",
   "map-file-provider": "QuantConnect.Data.Auxiliary.LocalDiskMapFileProvider",
   "factor-file-provider": "QuantConnect.Data.Auxiliary.LocalDiskFactorFileProvider",
-  "data-provider": "QuantConnect.Lean.Engine.DataFeeds.DefaultDataProvider",
+  "data-provider": "QuantConnect.Lean.Engine.DataFeeds.DownloaderDataProvider",
+  "data-downloader": "QuantConnect.ToolBox.AlphaVantageDownloader.AlphaVantageDataDownloader",
+  // "map-file-provider": "QuantConnect.Data.Auxiliary.LocalDiskMapFileProvider",
+  // "factor-file-provider": "QuantConnect.Data.Auxiliary.LocalDiskFactorFileProvider",
+  // "data-provider": "QuantConnect.Lean.Engine.DataFeeds.DefaultDataProvider",
   // "map-file-provider": "QuantConnect.Data.Auxiliary.LocalZipMapFileProvider",
   // "factor-file-provider": "QuantConnect.Data.Auxiliary.LocalZipFactorFileProvider",
   // "data-provider": "QuantConnect.Lean.Engine.DataFeeds.ApiDataProvider",
@@ -92,6 +101,9 @@
   "tradier-account-id": "foobar",
   "tradier-access-token": "foobar",
   "tradier-streaming-access-token": "foobar",
+
+  //alpha vantage configuration
+  "alpha-vantage-api-key": "KEY",
 
   // parameters to set in the algorithm (the below are just samples)
   "parameters": {

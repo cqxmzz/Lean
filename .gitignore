@@ -281,3 +281,5 @@ Results/
 Launcher/config.json
 Launcher/research_config.json
 Launcher/tax_loss_config.json
+
+.DS_Store
