@@ -83,7 +83,7 @@ namespace QuantConnect.Tests.ToolBox.AlphaVantageDownloader
             _avClient.Verify();
             var requestUrl = BuildUrl(request);
             Assert.AreEqual(Method.GET, request.Method);
-            Assert.AreEqual($"{BASE_URL}query?symbol=AAPL&datatype=csv&function=TIME_SERIES_DAILY", requestUrl);
+            Assert.AreEqual($"{BASE_URL}query?symbol=AAPL&datatype=csv&function=TIME_SERIES_DAILY_ADJUSTED", requestUrl);
 
             Assert.IsInstanceOf<IEnumerable<TradeBar>>(result);
             var bars = ((IEnumerable<TradeBar>)result).ToList();

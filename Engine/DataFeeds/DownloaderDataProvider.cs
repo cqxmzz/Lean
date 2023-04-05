@@ -182,7 +182,7 @@ namespace QuantConnect.Lean.Engine.DataFeeds
                         {
                             if (writer == null)
                             {
-                                writer = new LeanDataWriter(resolution, symbol, Globals.DataFolder, tickType, mapSymbol: true, dataCacheProvider: _dataCacheProvider);
+                                writer = new LeanDataWriter(resolution, symbol, Globals.DataFolder, tickType, mapSymbol: Config.GetBool("downloader-data-provider-map-symbol", true), dataCacheProvider: _dataCacheProvider);
                             }
 
                             // Save the data

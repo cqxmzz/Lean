@@ -41,4 +41,10 @@ namespace QuantConnect.ToolBox.AlphaVantageDownloader
         [Name("volume")]
         public decimal Volume { get; set; }
     }
+
+    internal class TimeSeriesAdjusted : TimeSeries
+    {
+        [Name("adjusted_close")]
+        public decimal AdjustedClose { get; set; }
+    }
 }

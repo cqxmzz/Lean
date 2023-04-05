@@ -92,22 +92,25 @@ namespace QuantConnect.ToolBox.AlphaVantageDownloader
             request.AddParameter("symbol", symbol.Value);
             request.AddParameter("datatype", "csv");
 
-            IEnumerable<TimeSeries> data = null;
+            var period = resolution.ToTimeSpan();
+
             switch (resolution)
             {
                 case Resolution.Minute:
                 case Resolution.Hour:
+                    IEnumerable<TimeSeries> data = null;
                     data = GetIntradayData(request, startUtc, endUtc, resolution);
-                    break;
+                    return data.Select(d => new TradeBar(d.Time, symbol, d.Open, d.High, d.Low, d.Close, d.Volume, period));
                 case Resolution.Daily:
-                    data = GetDailyData(request, startUtc, endUtc, symbol);
-                    break;
+                    IEnumerable<TimeSeriesAdjusted> dataAdj = null;
+                    dataAdj = GetDailyData(request, startUtc, endUtc, symbol);
+                    return dataAdj.Select(d => {
+                        decimal adjRate = d.AdjustedClose / d.Close;
+                        return new TradeBar(d.Time, symbol, d.Open * adjRate, d.High * adjRate, d.Low * adjRate, d.AdjustedClose, d.Volume, period);
+                    });
                 default:
                     throw new ArgumentOutOfRangeException(nameof(resolution), $"{resolution} resolution not supported by API.");
             }
-
-            var period = resolution.ToTimeSpan();
-            return data.Select(d => new TradeBar(d.Time, symbol, d.Open, d.High, d.Low, d.Close, d.Volume, period));
         }
 
         /// <summary>
@@ -118,9 +121,9 @@ namespace QuantConnect.ToolBox.AlphaVantageDownloader
         /// <param name="endUtc">End time</param>
         /// <param name="symbol">Symbol to download</param>
         /// <returns></returns>
-        private IEnumerable<TimeSeries> GetDailyData(RestRequest request, DateTime startUtc, DateTime endUtc, Symbol symbol)
+        private IEnumerable<TimeSeriesAdjusted> GetDailyData(RestRequest request, DateTime startUtc, DateTime endUtc, Symbol symbol)
         {
-            request.AddParameter("function", "TIME_SERIES_DAILY");
+            request.AddParameter("function", "TIME_SERIES_DAILY_ADJUSTED");
 
             // The default output only includes 100 trading days of data. If we want need more, specify full output
             if (GetBusinessDays(startUtc, endUtc, symbol) > 100)
@@ -128,7 +131,7 @@ namespace QuantConnect.ToolBox.AlphaVantageDownloader
                 request.AddParameter("outputsize", "full");
             }
 
-            return GetTimeSeries(request);
+            return GetTimeSeries<TimeSeriesAdjusted>(request);
         }
 
         /// <summary>
@@ -142,7 +145,7 @@ namespace QuantConnect.ToolBox.AlphaVantageDownloader
         private IEnumerable<TimeSeries> GetIntradayData(RestRequest request, DateTime startUtc, DateTime endUtc, Resolution resolution)
         {
             request.AddParameter("function", "TIME_SERIES_INTRADAY_EXTENDED");
-            request.AddParameter("adjusted", "false");
+            request.AddParameter("adjusted", "true");
             switch (resolution)
             {
                 case Resolution.Minute:
@@ -159,7 +162,7 @@ namespace QuantConnect.ToolBox.AlphaVantageDownloader
             foreach (var slice in slices)
             {
                 request.AddOrUpdateParameter("slice", slice);
-                var data = GetTimeSeries(request);
+                var data = GetTimeSeries<TimeSeries>(request);
                 foreach (var record in data)
                 {
                     yield return record;
@@ -172,7 +175,7 @@ namespace QuantConnect.ToolBox.AlphaVantageDownloader
         /// </summary>
         /// <param name="request">The request</param>
         /// <returns><see cref="TimeSeries"/> data</returns>
-        private IEnumerable<TimeSeries> GetTimeSeries(RestRequest request)
+        private IEnumerable<T> GetTimeSeries<T>(RestRequest request) where T : TimeSeries
         {
             if (_rateGate.IsRateLimited)
             {
@@ -193,7 +196,7 @@ namespace QuantConnect.ToolBox.AlphaVantageDownloader
             {
                 using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                 {
-                    return csv.GetRecords<TimeSeries>()
+                    return csv.GetRecords<T>()
                               .OrderBy(t => t.Time)
                               .ToList(); // Execute query before readers are disposed.
                 }
