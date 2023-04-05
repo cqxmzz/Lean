@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>QuantConnect.DataLibrary.Tests</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\Demonstration.cs" Link="Demonstration.cs" />
+    <Compile Include="..\SECReport8KAlgorithm.cs" Link="SECReport8KAlgorithm.cs" />
+    <Content Include="..\SECReport8KAlgorithm.py" Link="SECReport8KAlgorithm.py" />
+    <Compile Include="..\SECReportBenchmarkAlgorithm.cs" Link="SECReportBenchmarkAlgorithm.cs" />
+    <Content Include="..\SECReportBenchmarkAlgorithm.py" Link="SECReportBenchmarkAlgorithm.py" />
+    <Compile Include="..\SECReportDataAlgorithm.cs" Link="SECReportDataAlgorithm.cs" />
+    <Content Include="..\SECReportDataAlgorithm.py" Link="SECReportDataAlgorithm.py" />
+    <Content Include="TestData\sec_report_raw_single.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\sec_report_raw_multiple.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="protobuf-net" Version="3.0.29" />
+    <PackageReference Include="NUnit" Version="3.13.3" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.2.1">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
+    <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="16.9.4" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\QuantConnect.DataSource.csproj" />
+    <ProjectReference Include="..\DataProcessing\DataProcessing.csproj" />
+    <ProjectReference Include="..\..\Lean\Algorithm\QuantConnect.Algorithm.csproj" />
+    <ProjectReference Include="..\..\Lean\Algorithm.Framework\QuantConnect.Algorithm.Framework.csproj" />
+  </ItemGroup>
+</Project>

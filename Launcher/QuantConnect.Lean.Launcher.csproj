@@ -59,6 +59,9 @@
     <ProjectReference Include="..\Queues\QuantConnect.Queues.csproj" />
     <ProjectReference Include="..\ToolBox\QuantConnect.ToolBox.csproj" />
     <ProjectReference Include="..\TradierBrokerage\QuantConnect.TradierBrokerage.csproj" />
+    <ProjectReference Include="..\DataSource\FRED\QuantConnect.DataSource.csproj" />
+    <ProjectReference Include="..\DataSource\SEC\QuantConnect.DataSource.csproj" />
+    <ProjectReference Include="..\DataSource\USTreasury\QuantConnect.DataSource.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\LICENSE">
