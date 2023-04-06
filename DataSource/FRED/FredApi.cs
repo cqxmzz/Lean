@@ -15,6 +15,7 @@
 */
 
 using Newtonsoft.Json;
+using QuantConnect.Configuration;
 using QuantConnect.Data;
 using QuantConnect.Data.UniverseSelection;
 using System;
@@ -71,27 +72,26 @@ namespace QuantConnect.DataSource
         public IList<Observation> Observations { get; set; }
 #pragma warning restore 1591
 
+        private static string _auth_code = "";
+        
         /// <summary>
         /// Gets the FRED API token.
         /// </summary>
-        public static string AuthCode { get; private set; } = string.Empty;
+        public static string AuthCode { get {
+            if (IsAuthCodeSet) {
+                return _auth_code;
+            } else {
+                return Config.Get("fred-api-key");
+            }
+        } private set {
+            _auth_code = value;
+            IsAuthCodeSet = true;
+        } }
 
         /// <summary>
         /// Returns true if the FRED API token has been set.
         /// </summary>
         public static bool IsAuthCodeSet { get; private set; }
-
-        /// <summary>
-        /// Sets the EIA API token.
-        /// </summary>
-        /// <param name="authCode">The EIA API token</param>
-        public static void SetAuthCode(string authCode)
-        {
-            if (string.IsNullOrWhiteSpace(authCode)) return;
-
-            AuthCode = authCode;
-            IsAuthCodeSet = true;
-        }
 
         /// <summary>
         /// Return the URL string source of the file. This will be converted to a stream
@@ -105,7 +105,7 @@ namespace QuantConnect.DataSource
         public override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, bool isLiveMode)
         {
             return new SubscriptionDataSource(
-                $"https://api.stlouisfed.org/fred/series/observations?file_type=json&observation_start=1998-01-01&api_key={AuthCode}&series_id={config.Symbol}",
+                $"https://api.stlouisfed.org/fred/series/observations?file_type=json&observation_start=1998-01-01&api_key={AuthCode}&series_id={config.Symbol.Value}",
                 SubscriptionTransportMedium.Rest,
                 FileFormat.UnfoldingCollection);
         }

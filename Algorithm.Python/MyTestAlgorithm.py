@@ -24,6 +24,7 @@ class MyTestAlgorithm(QCAlgorithm):
         self.SetCash(100000)           #Set Strategy Cash
         # Find more symbols here: http://quantconnect.com/data
         self.AddEquity("META", Resolution.Daily)
+        self.fredPeakToTrough = self.AddData(FredApi, Fred.OECDRecessionIndicators.UnitedStatesFromPeakThroughTheTrough, Resolution.Daily).Symbol
 
     def OnData(self, data):
         '''OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
@@ -33,3 +34,9 @@ class MyTestAlgorithm(QCAlgorithm):
         '''
         if not self.Portfolio.Invested:
             self.SetHoldings("META", 1)
+
+        if data.ContainsKey(self.fredPeakToTrough):
+            peakToTrough = data.Get(FredApi, self.fredPeakToTrough)
+            self.Log(f"OECD based Recession Indicator for the United States from the Peak through the Trough: {peakToTrough.Value}")
+
+
