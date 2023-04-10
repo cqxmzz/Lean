@@ -75,7 +75,7 @@ namespace QuantConnect.DataSource
             return new CustomBaseData
             {
                 // A one day delay is added to the end time automatically
-                Time = QuantConnect.Parse.DateTime(csv[0]),
+                Time = QuantConnect.Parse.DateTimeExact(csv[0], DateFormat.TwelveCharacter),
                 Symbol = config.Symbol,
                 Value = Parse.Int(csv[1]) / 10000m,
             };
