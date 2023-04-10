@@ -26,7 +26,7 @@ using System.Linq;
 
 namespace QuantConnect.DataSource
 {
-    public class FredDownload : DownloaderDataProviderBaseData
+    public class FredDownload : DownloaderDataProviderBaseData<FredDownload>
     {
         public FredDownload() : base (new FREDDataDownloader()) { }
 
@@ -79,7 +79,6 @@ namespace QuantConnect.DataSource
             var reader = new RestSubscriptionStreamReader(link, null, false);
             while (!reader.EndOfStream)
             {
-                BaseData instance = null;
                 string line = null;
                 try
                 {
@@ -102,7 +101,9 @@ namespace QuantConnect.DataSource
                             }
                         }
                     }
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                    throw e;
+                }
             }
             return objectList;
         }

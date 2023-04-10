@@ -21,17 +21,21 @@ using System.Linq;
 
 namespace QuantConnect.DataSource
 {
-    class CustomBaseData : BaseData {};
 
-    public abstract class DownloaderDataProviderBaseData : BaseData
+    public class DownloaderDataProviderBaseData<T> : BaseData where T: BaseData, new()
     {
         // data provider
         DownloaderCustomDataProvider _dataProvider;
         // initializer
+        public DownloaderDataProviderBaseData() { }
         public DownloaderDataProviderBaseData(IDataDownloader dataDownloader)
         {
             _dataProvider = new DownloaderCustomDataProvider(dataDownloader, this.GetType());
+            if (this.GetType() != typeof(T)) {
+                throw new Exception("type template to extend DownloaderDataProviderBaseData should be itself");
+            }
         }
+
 
         public int GetDataUpdatePeriod(bool isLiveMode)
         {
@@ -72,7 +76,7 @@ namespace QuantConnect.DataSource
                 .Select(x => x.Trim())
                 .ToList();
 
-            return new CustomBaseData
+            return new T
             {
                 // A one day delay is added to the end time automatically
                 Time = QuantConnect.Parse.DateTimeExact(csv[0], DateFormat.TwelveCharacter),
