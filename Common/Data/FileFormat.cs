@@ -51,6 +51,11 @@ namespace QuantConnect.Data
         /// Reader method can return a non BaseDataCollection type which will be folded, based on unique time,
         /// into an instance of the data type (5)
         /// </summary>
-        FoldingCollection
+        FoldingCollection,
+
+        /// <summary>
+        /// Our own custom data  (6)
+        /// </summary>
+        CustomData
     }
 }

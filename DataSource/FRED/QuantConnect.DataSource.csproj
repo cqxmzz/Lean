@@ -13,7 +13,11 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\DownloaderDataProviderBaseData.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\Common\QuantConnect.csproj" />
+    <ProjectReference Include="..\..\Engine\QuantConnect.Lean.Engine.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="tests\**" />

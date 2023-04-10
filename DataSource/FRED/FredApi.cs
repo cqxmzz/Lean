@@ -105,7 +105,7 @@ namespace QuantConnect.DataSource
         public override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, bool isLiveMode)
         {
             return new SubscriptionDataSource(
-                $"https://api.stlouisfed.org/fred/series/observations?file_type=json&observation_start=1998-01-01&api_key={AuthCode}&series_id={config.Symbol.Value}",
+                $"https://api.stlouisfed.org/fred/series/observations?file_type=json&observation_start=1998-01-01&api_key={AuthCode}&series_id={config.Symbol}",
                 SubscriptionTransportMedium.Rest,
                 FileFormat.UnfoldingCollection);
         }

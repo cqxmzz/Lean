@@ -64,6 +64,10 @@ namespace QuantConnect.Lean.Engine.DataFeeds
                 case FileFormat.FoldingCollection:
                     reader = new BaseDataCollectionAggregatorReader(dataCacheProvider, config, date, isLiveMode);
                     break;
+                
+                case FileFormat.CustomData:
+                    reader = new CustomSubscriptionDataSourceReader(dataCacheProvider, config, date, isLiveMode);
+                    break;
 
                 default:
                     throw new NotImplementedException("SubscriptionFactory.ForSource(" + source + ") has not been implemented yet.");

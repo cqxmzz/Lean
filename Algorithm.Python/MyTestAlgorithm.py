@@ -19,12 +19,12 @@ class MyTestAlgorithm(QCAlgorithm):
     def Initialize(self):
         '''Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.'''
 
-        self.SetStartDate(2022,2,1)  #Set Start Date
+        self.SetStartDate(2020,2,1)  #Set Start Date
         self.SetEndDate(2023,2,1)    #Set End Date
         self.SetCash(100000)           #Set Strategy Cash
         # Find more symbols here: http://quantconnect.com/data
         self.AddEquity("META", Resolution.Daily)
-        self.fredPeakToTrough = self.AddData(FredApi, Fred.OECDRecessionIndicators.UnitedStatesFromPeakThroughTheTrough, Resolution.Daily).Symbol
+        self.fredPeakToTrough = self.AddData(FredDownload, Fred.OECDRecessionIndicators.UnitedStatesFromPeakThroughTheTrough, Resolution.Daily).Symbol
 
     def OnData(self, data):
         '''OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
@@ -36,7 +36,7 @@ class MyTestAlgorithm(QCAlgorithm):
             self.SetHoldings("META", 1)
 
         if data.ContainsKey(self.fredPeakToTrough):
-            peakToTrough = data.Get(FredApi, self.fredPeakToTrough)
+            peakToTrough = data.Get(FredDownload, self.fredPeakToTrough)
             self.Log(f"OECD based Recession Indicator for the United States from the Peak through the Trough: {peakToTrough.Value}")
 
 
