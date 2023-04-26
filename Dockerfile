@@ -4,7 +4,7 @@
 #
 
 # Use base system
-FROM --platform=linux/amd64 quantconnect/lean:foundation
+FROM quantconnect/lean:foundation
 
 MAINTAINER QuantConnect <contact@quantconnect.com>
 
