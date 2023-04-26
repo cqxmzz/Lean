@@ -163,7 +163,7 @@ namespace QuantConnect.Util.RateLimit
 
                 // subtract the number of tokens consumed
                 _available = _available - tokens;
-                Logging.Log.Trace($"LeakyBucket.TryConsume({tokens}): Successfully consumed tokens. Available: {_available}");
+                // Logging.Log.Trace($"LeakyBucket.TryConsume({tokens}): Successfully consumed tokens. Available: {_available}");
                 return true;
             }
         }

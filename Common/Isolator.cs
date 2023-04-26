@@ -139,13 +139,13 @@ namespace QuantConnect
                         Log.Error(Messages.Isolator.MemoryUsageOver80Percent(sample));
                     }
 
-                    Log.Trace("Isolator.ExecuteWithTimeLimit(): " +
-                        Messages.Isolator.MemoryUsageInfo(
-                            PrettyFormatRam(memoryUsed),
-                            PrettyFormatRam((long)sample),
-                            PrettyFormatRam(OS.ApplicationMemoryUsed * 1024 * 1024),
-                            isolatorLimitResult.CurrentTimeStepElapsed,
-                            (int)Math.Ceiling(OS.CpuUsage)));
+                    // Log.Trace("Isolator.ExecuteWithTimeLimit(): " +
+                    //     Messages.Isolator.MemoryUsageInfo(
+                    //         PrettyFormatRam(memoryUsed),
+                    //         PrettyFormatRam((long)sample),
+                    //         PrettyFormatRam(OS.ApplicationMemoryUsed * 1024 * 1024),
+                    //         isolatorLimitResult.CurrentTimeStepElapsed,
+                    //         (int)Math.Ceiling(OS.CpuUsage)));
 
                     memoryLogger = utcNow.AddMinutes(1);
                 }
