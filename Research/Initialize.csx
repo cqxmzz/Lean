@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Internal;
 
 var currentDirectory = Directory.GetCurrentDirectory();
 var parentDirectory = Directory.GetParent(currentDirectory).FullName;
