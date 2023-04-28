@@ -7,6 +7,8 @@
   "backtest-data-source-file": "/Lean/Launcher/bin/Release/MyTestAlgorithm.json",
   "report-destination": "MyTestAlgorithm.html",
 
+  "close-automatically": true,
+
   "environment": "report",
 
   // handlers

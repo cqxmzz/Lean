@@ -34,8 +34,6 @@
                 "--algorithm-location",
                 "/Lean/Algorithm.Python/MyTestAlgorithm.py",
                 "--mute-python-library-logging",
-                "true",
-                "--close-automatically",
                 "true"
             ],
             "cwd": "${workspaceFolder}/Launcher/bin/Release/",
@@ -62,9 +60,7 @@
                 "--algorithm-location",
                 "/Lean/Algorithm.Python/MyTestAlgorithm.py",
                 "--mute-python-library-logging",
-                "false",
-                "--close-automatically",
-                "true"
+                "false"
             ],
             "cwd": "${workspaceFolder}/Launcher/bin/Debug/",
             "stopAtEntry": false,
@@ -90,8 +86,6 @@
                 "--algorithm-location",
                 "${file}",
                 "--mute-python-library-logging",
-                "true",
-                "--close-automatically",
                 "true"
             ],
             "cwd": "${workspaceFolder}/Launcher/bin/Release/",
@@ -118,9 +112,7 @@
                 "--algorithm-location",
                 "${file}",
                 "--mute-python-library-logging",
-                "false",
-                "--close-automatically",
-                "true"
+                "false"
             ],
             "cwd": "${workspaceFolder}/Launcher/bin/Debug/",
             "stopAtEntry": false,
@@ -146,8 +138,6 @@
                 "--algorithm-location",
                 "/Lean/Algorithm.Python/TaxLossHarvestAlgorithm.py",
                 "--mute-python-library-logging",
-                "true",
-                "--close-automatically",
                 "true"
             ],
             "cwd": "${workspaceFolder}/Launcher/bin/Release/",
@@ -174,9 +164,7 @@
                 "--algorithm-location",
                 "/Lean/Algorithm.Python/TaxLossHarvestAlgorithm.py",
                 "--mute-python-library-logging",
-                "false",
-                "--close-automatically",
-                "true"
+                "false"
             ],
             "cwd": "${workspaceFolder}/Launcher/bin/Debug/",
             "stopAtEntry": false,
@@ -194,9 +182,7 @@
             "program": "${workspaceFolder}/Report/bin/Release/QuantConnect.Report.dll",
             "args": [
                 "--config",
-                "${workspaceFolder}/Report/bin/Release/config.json",
-                "--close-automatically",
-                "true"
+                "${workspaceFolder}/Report/bin/Release/config.json"
             ],
             "cwd": "${workspaceFolder}/Report/bin/Release/",
             "stopAtEntry": false,
