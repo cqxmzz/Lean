@@ -18,6 +18,7 @@ using System.IO;
 using QuantConnect.Util;
 using QuantConnect.Interfaces;
 using System.Collections.Concurrent;
+using QuantConnect.Configuration;
 
 namespace QuantConnect.Data.Auxiliary
 {
@@ -57,7 +58,9 @@ namespace QuantConnect.Data.Auxiliary
         /// <returns>The resolved factor file, or null if not found</returns>
         public IFactorProvider Get(Symbol symbol)
         {
-            return null;
+            if (!Config.GetBool("use-factor-file-provider", true)) {
+                return null;
+            }
             symbol = symbol.GetFactorFileSymbol();
             IFactorProvider factorFile;
             if (_cache.TryGetValue(symbol, out factorFile))
