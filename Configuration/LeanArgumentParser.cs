@@ -72,6 +72,7 @@ namespace QuantConnect.Configuration
                 // debugging configuration
                 new CommandLineOption("debugging", CommandOptionType.SingleValue),
                 new CommandLineOption("debugging-method", CommandOptionType.SingleValue),
+                new CommandLineOption("mute-python-library-logging", CommandOptionType.SingleValue),
 
                 // handlers
                 new CommandLineOption("log-handler", CommandOptionType.SingleValue),

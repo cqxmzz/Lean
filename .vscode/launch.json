@@ -33,6 +33,8 @@
                 "MyTestAlgorithm",
                 "--algorithm-location",
                 "/Lean/Algorithm.Python/MyTestAlgorithm.py",
+                "--mute-python-library-logging",
+                "true",
                 "--close-automatically",
                 "true"
             ],
@@ -59,6 +61,8 @@
                 "MyTestAlgorithm",
                 "--algorithm-location",
                 "/Lean/Algorithm.Python/MyTestAlgorithm.py",
+                "--mute-python-library-logging",
+                "false",
                 "--close-automatically",
                 "true"
             ],
@@ -85,6 +89,8 @@
                 "${fileBasenameNoExtension}",
                 "--algorithm-location",
                 "${file}",
+                "--mute-python-library-logging",
+                "true",
                 "--close-automatically",
                 "true"
             ],
@@ -111,6 +117,8 @@
                 "${fileBasenameNoExtension}",
                 "--algorithm-location",
                 "${file}",
+                "--mute-python-library-logging",
+                "false",
                 "--close-automatically",
                 "true"
             ],
@@ -137,6 +145,8 @@
                 "TaxLossHarvestAlgorithm",
                 "--algorithm-location",
                 "/Lean/Algorithm.Python/TaxLossHarvestAlgorithm.py",
+                "--mute-python-library-logging",
+                "true",
                 "--close-automatically",
                 "true"
             ],
@@ -163,6 +173,8 @@
                 "TaxLossHarvestAlgorithm",
                 "--algorithm-location",
                 "/Lean/Algorithm.Python/TaxLossHarvestAlgorithm.py",
+                "--mute-python-library-logging",
+                "false",
                 "--close-automatically",
                 "true"
             ],
