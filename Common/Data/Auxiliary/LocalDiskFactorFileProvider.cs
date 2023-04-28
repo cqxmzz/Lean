@@ -57,6 +57,7 @@ namespace QuantConnect.Data.Auxiliary
         /// <returns>The resolved factor file, or null if not found</returns>
         public IFactorProvider Get(Symbol symbol)
         {
+            return null;
             symbol = symbol.GetFactorFileSymbol();
             IFactorProvider factorFile;
             if (_cache.TryGetValue(symbol, out factorFile))
