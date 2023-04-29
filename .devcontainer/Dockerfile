@@ -27,6 +27,8 @@ RUN rm -r /scip
 
 RUN pip install --no-cache-dir pyscipopt
 
+RUN pip install --upgrade cvxpy
+
 # Can override with '-w'
 WORKDIR /Lean/Launcher/bin/Release
 
