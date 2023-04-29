@@ -32,9 +32,7 @@
                 "--algorithm-type-name",
                 "MyTestAlgorithm",
                 "--algorithm-location",
-                "/Lean/Algorithm.Python/MyTestAlgorithm.py",
-                "--mute-python-library-logging",
-                "true"
+                "/Lean/Algorithm.Python/MyTestAlgorithm.py"
             ],
             "cwd": "${workspaceFolder}/Launcher/bin/Release/",
             "stopAtEntry": false,
@@ -84,9 +82,7 @@
                 "--algorithm-type-name",
                 "${fileBasenameNoExtension}",
                 "--algorithm-location",
-                "${file}",
-                "--mute-python-library-logging",
-                "true"
+                "${file}"
             ],
             "cwd": "${workspaceFolder}/Launcher/bin/Release/",
             "stopAtEntry": false,
@@ -136,9 +132,7 @@
                 "--algorithm-type-name",
                 "TaxLossHarvestAlgorithm",
                 "--algorithm-location",
-                "/Lean/Algorithm.Python/TaxLossHarvestAlgorithm.py",
-                "--mute-python-library-logging",
-                "true"
+                "/Lean/Algorithm.Python/TaxLossHarvestAlgorithm.py"
             ],
             "cwd": "${workspaceFolder}/Launcher/bin/Release/",
             "stopAtEntry": false,
