@@ -18,7 +18,7 @@
 	},
 
 	// Add the IDs of extensions you want installed when the container is created.
-	"extensions": ["ms-dotnettools.csharp", "ms-python.python", "ms-python.vscode-pylance"],
+	"extensions": ["ms-dotnettools.csharp", "ms-python.python", "ms-python.vscode-pylance", "ms-vscode.live-server", "meezilla.json", "ms-toolsai.jupyter", "ms-toolsai.vscode-jupyter-cell-tags", "ms-toolsai.jupyter-renderers", "ms-toolsai.vscode-jupyter-slideshow"],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
