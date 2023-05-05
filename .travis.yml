@@ -19,5 +19,6 @@ before_install:
   - conda install -y wrapt=1.12.1
 script:
   - dotnet nuget add source $TRAVIS_BUILD_DIR/LocalPackages
+  - dotnet restore
   - dotnet build /p:Configuration=Release /v:quiet /p:WarningLevel=1 QuantConnect.Lean.sln
   - dotnet test ./Tests/bin/Release/QuantConnect.Tests.dll --filter TestCategory!=TravisExclude -- TestRunParameters.Parameter\(name=\"log-handler\", value=\"ConsoleErrorLogHandler\"\)
