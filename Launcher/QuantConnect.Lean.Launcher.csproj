@@ -57,6 +57,7 @@
     <ProjectReference Include="..\Optimizer.Launcher\QuantConnect.Optimizer.Launcher.csproj" />
     <ProjectReference Include="..\Research\QuantConnect.Research.csproj" />
     <ProjectReference Include="..\Logging\QuantConnect.Logging.csproj" />
+    <ProjectReference Include="..\Report\QuantConnect.Report.csproj" />
     <ProjectReference Include="..\Messaging\QuantConnect.Messaging.csproj" />
     <ProjectReference Include="..\Queues\QuantConnect.Queues.csproj" />
     <ProjectReference Include="..\ToolBox\QuantConnect.ToolBox.csproj" />
