@@ -25,6 +25,7 @@ body {
 }
 
 .page {
+    filter: brightness(50%);
     width: 993px;
     height: 1405px;
     overflow: hidden;

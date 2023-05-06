@@ -34,6 +34,7 @@
                 "--algorithm-location",
                 "/Lean/Algorithm.Python/MyTestAlgorithm.py"
             ],
+            "postDebugTask": "release report",
             "cwd": "${workspaceFolder}/Launcher/bin/Release/",
             "stopAtEntry": false,
             "console": "integratedTerminal",

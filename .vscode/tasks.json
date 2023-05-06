@@ -9,7 +9,7 @@
             "label": "start research debug",
             "type": "shell",
             "dependsOn": ["build"],
-            "group": "build",
+            "group": "none",
             "isBackground": true,
             "command" : "${workspaceFolder}/.vscode/launch_research.sh",
             "args" : [
@@ -28,7 +28,10 @@
                 "/p:WarningLevel=1",
                 "/p:SelectedOptimization=true"
             ],
-            "group": "build",
+            "group":{
+                "kind": "build",
+                "isDefault": true
+            },
             "presentation": {
                 "close": true,
                 "reveal": "silent"
@@ -128,6 +131,17 @@
             ],
             "group": "build",
             "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "release report",
+            "type": "shell",
+            "command": "cd /Lean/Report/bin/Release/ && dotnet /Lean/Report/bin/Release/QuantConnect.Report.dll --config /Lean/Report/bin/Release/config.json",
+            "group":"none",
+            "presentation": {
+                "close": true,
                 "reveal": "silent"
             },
             "problemMatcher": "$msCompile"
