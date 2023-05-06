@@ -17,7 +17,10 @@ RUN if [ "$(uname -m)" = "aarch64" ] || [ "$(uname -m)" = "arm64" ]; then \
     && rm -r /scip \
     && pip install --no-cache-dir pyscipopt; \
     else \
-    conda install -c conda-forge pyscipopt; \
+    conda install -c conda-forge pyscipopt \
+    && add-apt-repository -y ppa:ubuntu-toolchain-r/test \
+    && apt-get update \
+    && apt-get upgrade -y libstdc++6;
     fi;
 
 # Install dos2unix utility for converting pesky windows formatting when needed
