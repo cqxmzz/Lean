@@ -2,7 +2,8 @@
     "files.eol": "\n",
     "python.analysis.extraPaths": [
         "/Lean/Algorithm.Python",
-        "/opt/miniconda3/lib/python3.8/site-packages"
+        "/opt/miniconda3/lib/python3.8/site-packages",
+        "/opt/miniforge3/lib/python3.8/site-packages"
     ],
     "jupyter.kernels.filter": [
         {
