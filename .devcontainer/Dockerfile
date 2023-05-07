@@ -20,7 +20,7 @@ RUN if [ "$(uname -m)" = "aarch64" ] || [ "$(uname -m)" = "arm64" ]; then \
     conda install -c conda-forge pyscipopt \
     && add-apt-repository -y ppa:ubuntu-toolchain-r/test \
     && apt-get update \
-    && apt-get upgrade -y libstdc++6;
+    && apt-get upgrade -y libstdc++6; \
     fi;
 
 # Install dos2unix utility for converting pesky windows formatting when needed

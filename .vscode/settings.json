@@ -42,5 +42,8 @@
             "path": "/bin/python3",
             "type": "pythonEnvironment"
         }
-    ]
+    ],
+    "python.analysis.typeCheckingMode": "basic",
+    "python.linting.flake8Enabled": true,
+    "python.linting.enabled": false
 }
