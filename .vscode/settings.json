@@ -3,7 +3,8 @@
     "python.analysis.extraPaths": [
         "/Lean/Algorithm.Python",
         "/opt/miniconda3/lib/python3.8/site-packages",
-        "/opt/miniforge3/lib/python3.8/site-packages"
+        "/opt/miniforge3/lib/python3.8/site-packages",
+        "./Algorithm.Python"
     ],
     "jupyter.kernels.filter": [
         {
