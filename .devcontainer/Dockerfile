@@ -33,7 +33,13 @@ RUN pip install --no-cache-dir xgboost
 
 RUN pip install --upgrade cvxpy
 
-# Can override with '-w'
-WORKDIR /Lean/Launcher/bin/Release
+WORKDIR /Lean
 
-ENTRYPOINT [ "dotnet", "QuantConnect.Lean.Launcher.dll" ]
+# RUN curl -sL "https://code.visualstudio.com/sha/download?build=stable&os=cli-alpine-x64" \
+#         --output /tmp/vscode-cli.tar.gz && \
+#     tar -xf /tmp/vscode-cli.tar.gz -C /usr/bin && \
+#     rm /tmp/vscode-cli.tar.gz
+
+# CMD [ "code", "tunnel", "--accept-server-license-terms" ]
+
+# ENTRYPOINT [ "dotnet", "QuantConnect.Lean.Launcher.dll" ]
