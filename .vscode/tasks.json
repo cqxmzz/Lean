@@ -51,6 +51,7 @@
             ],
             "group": "build",
             "presentation": {
+                "close": true,
                 "reveal": "silent"
             },
             "problemMatcher": "$msCompile"
